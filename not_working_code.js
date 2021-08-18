@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const appDir = path.dirname(require.main.filename);
-console.log(appDir);
 
 const users = [
     {name: "Olya", gender: "female", age: 21},
@@ -19,33 +18,20 @@ const users = [
     {name: "Vitalik", gender: "male", age: 15}
 ]
 
-users.forEach(user => {
-        console.log(user.name);
-        console.log(user.gender);
-        console.log(user.age);
-    let age =''
-    user.age<20 ? age= 'Older20' : age ='Younger20';
-    console.log(age)
-    let gender =''
-    user.gender==='male'? gender= 'man' : gender ='woman';
-    console.log(gender)
 
-    }
-)
+function createFilesOfUsers() {
+    users.forEach(user => {
+            const filePath_Name = path.join(__dirname, `${user.gender === 'male' ? 'man' : 'woman'}${user.age < 20 ? 'Older20' : 'Younger20'}`, `${user.name}.txt`);
+            let content = JSON.stringify(user).replace(/[{}]/g, '');
+             // create file
+            fs.writeFileSync(filePath_Name, content, err => {
+                console.log("*****  creating file error:", err)
+            })
+        }
+    )}
 
-
-function createFilesOfUsers  () {
-    // create file
-
-    const filePath_Name = path.join(__dirname, initialFolder.toString(), `${nickName}.txt`);
-    const content = `{Name: '${nickName}', gender: '${gender}'}`;
-    fs.writeFileSync(filePath_Name, content, err => {
-        console.log("*****  creating file error:", err)
-    })
-}
-
-
-
+// create files
+createFilesOfUsers()
 
 
 // const fs = require('fs');
