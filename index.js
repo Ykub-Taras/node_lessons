@@ -12,11 +12,14 @@ console.log(appDir);
 
 const createFolder1 = path.join(__dirname, '18.00');
 const createFolder2 = path.join(__dirname, '20.00');
+const targetFolder = path.join(__dirname, 'targetFolder');
 
 // -------------------------------- create folders
 fs.mkdir(createFolder1, {recursive:true}, err => {
     console.log(err)});
 fs.mkdir(createFolder2, {recursive:true}, err => {
+    console.log(err)});
+fs.mkdir(targetFolder, {recursive:true}, err => {
     console.log(err)});
 
 // -------------------------------- randomly creating files
