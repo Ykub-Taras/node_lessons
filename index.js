@@ -64,7 +64,9 @@ fs.readdir('./', { withFileTypes: true }, (error, files) => {
                     if (err) throw err;
                     if(data.includes('gender: \'male\'')){
                         // moving files to specified directories
-                        fs.rename(path.join(dir, file), path.join(dir,'..','20.00', file), err1 => {}
+                        fs.rename(path.join(dir, file), path.join(dir,'..','20.00', file), err1 => {
+                            // console.log(err1)
+                        }
                         )
                     }
                 });
@@ -88,6 +90,7 @@ fs.readdir('./', {withFileTypes: true}, (error, files) => {
             files.forEach(file => {
                 // moving file
                 fs.rename(path.join(dir, file), path.join(appDir, 'targetFolder', file), err1 => {
+                    // console.log(err1)
                     }
                 )
             });
