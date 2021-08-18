@@ -123,3 +123,4 @@ const users = [
 // вміст це сам ваш юзер - { name: 'olya', gender: 'female', age: 20 }
 // перед тим створити 4 папки - наприклад - manOlder20, manYounger20, womanOlder20, womanYounger20
 // і розподілити ваших юзерів саме по відповідних папках
+
