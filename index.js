@@ -95,6 +95,4 @@ app.post('/registration', ((req, res) => {
     } else {
         saveNewUser(name, password).then(() => console.log('Saved!'));
         res.redirect(`/authentication`)
-    }
-
-}))
+    }}))
