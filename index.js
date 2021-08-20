@@ -51,18 +51,6 @@ res.render('calculator', {name});
 
 app.get('/authentication', (req, res) => {res.render('login')});
 
-// ------------------------------
-
-// function saveNewUser(name, password) {
-//     return new Promise((resolve, reject) => {
-//         users.push({name: name, password: password})
-//         fs.writeFile(path.join('dataBase', 'users.json'), JSON.stringify(users), (err) => {
-//             if (err) reject(err)
-//             resolve("File saved.")
-//         })
-//     });
-// }
-
 const writeFile = util.promisify(fs.writeFile);
 
 async function saveNewUser(name, password) {
@@ -73,7 +61,6 @@ async function saveNewUser(name, password) {
         (console.log(error))
     }
     }
-
 
 app.post('/authentication', ((req, res) => {
     const {name, password} = req.body;
@@ -101,3 +88,15 @@ app.post('/registration', ((req, res) => {
         saveNewUser(name, password).then(() => console.log('Saved!'));
         res.redirect(`/authentication`)
     }}))
+
+// ------------------------------
+
+// function saveNewUser(name, password) {
+//     return new Promise((resolve, reject) => {
+//         users.push({name: name, password: password})
+//         fs.writeFile(path.join('dataBase', 'users.json'), JSON.stringify(users), (err) => {
+//             if (err) reject(err)
+//             resolve("File saved.")
+//         })
+//     });
+// }
