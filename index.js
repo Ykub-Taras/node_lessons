@@ -42,7 +42,7 @@ app.get('/user-by-id/:id', (req, res) => {
     res.send(users[id]);
 });
 
-app.get('/users/:id', (req, res) => {
+app.get('/calculator', (req, res) => {
     const {id} = req.params;
     const {name} = users[id];
 res.render('calculator', {name});
