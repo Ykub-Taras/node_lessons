@@ -30,12 +30,17 @@ app.post('/main', ((req, res) => {
     const {name} = req.body
     for (let i = 0; i < users.length; i++) {
         if (users[i].name === name) {
-            res.redirect(`/users/${i}`)
+            res.redirect(`/user-by-id/${i}`)
         }
     }
 }));
 
 app.get('/users', (req, res) => {res.render('users', {users})});
+
+app.get('/user-by-id/:id', (req, res) => {
+    const {id} = req.params;
+    res.send(users[id]);
+});
 
 app.get('/users/:id', (req, res) => {
     const {id} = req.params;
