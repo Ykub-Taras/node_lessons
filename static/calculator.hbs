@@ -18,17 +18,18 @@ in progress...
     <label>Value 1:<input type="number" placeholder="number" name="value1" required minlength="1">
     </label><br>
     <label>Operator:
-        <select  name="operator">
-            <option name="+">+</option>
-            <option name="-">-</option>
-            <option name="*">*</option>
-            <option name="/">/</option>
+        <select  name="operator" required>
+            <option name="add">+</option>
+            <option name="subtract">-</option>
+            <option name="multiply">*</option>
+            <option name="divide">/</option>
         </select>
     </label>
     <br>
     <label>Value 2:<input type="number" placeholder="number" name="value2" required minlength="1">
     </label><br>
-    <button type="submit">Submit</button>
+    <button type="submit"> = </button>
+    <output>{{result}}</output>
 </form>
 
 </body>

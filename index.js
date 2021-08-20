@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const util = require('util');
 
+
 const users = require('./dataBase/users.json');
 const {PORT} = require('./config/variables');
 
@@ -48,6 +49,28 @@ app.get('/users/:id', (req, res) => {
 res.render('calculator', {name});
 });
 
+function calculator (v1,operator, v2){
+switch (operator) {
+    case '+':
+        return  v1 + v2
+    case '-':
+        return  v1 - v2
+    case '*':
+        return  v1 / v2
+    case '/':
+        return  v1 * v2
+    default:
+        return 'Invalid operation'
+}}
+app.post('/users/:id', (req, res) => {
+    const {value1, operator,value2} = req.body;
+    const {id} = req.params;
+    const {name} = users[id];
+    const v1=+value1;
+    const v2=+value2;
+const result = calculator(v1,operator, v2)
+    res.render('calculator', {name, result})
+});
 
 app.get('/authentication', (req, res) => {res.render('login')});
 

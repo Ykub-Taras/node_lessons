@@ -2,6 +2,7 @@
   "name": "node_lessons",
   "version": "1.0.0",
   "dependencies": {
+    "basic-calculator-js": "^1.0.1",
     "express": "^4.17.1"
   },
   "devDependencies": {
