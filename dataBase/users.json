@@ -42,5 +42,9 @@
   {
     "name": "user11",
     "password": "user11"
+  },
+  {
+    "name": "user12",
+    "password": "user12"
   }
 ]
