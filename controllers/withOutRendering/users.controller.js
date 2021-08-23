@@ -6,6 +6,6 @@ module.exports = {
     },
     getUserById: (req, res) => {
         const { id } = req.params;
-        (id <= users.length && id > -1) ? res.json(users[id]) : res.json('Such user doesnt exist');
+        (id <= users.length && id > -1) ? res.json(users[id]) : res.status(406).json('Such user doesnt exist');
     }
 };

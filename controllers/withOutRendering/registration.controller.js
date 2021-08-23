@@ -8,9 +8,9 @@ module.exports = {
 
     postRegistrationPage: (req, res) => {
         const { name, password } = req.body;
-        if (name === undefined || password === undefined) return res.json('Invalid data!');
+        if (name === undefined || password === undefined) return res.status(406).json('Invalid data!');
         const id = users.findIndex((value) => value.name === name);
-        if (id > -1) return res.json('This user exist in base!');
+        if (id > -1) return res.status(409).json('This user exist in base!');
         saveNewUser(name, password).then(() => console.log('Saved!'));
         res.json('User saved!');
     }
