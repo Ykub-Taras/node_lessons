@@ -5,7 +5,7 @@ const fs = require('fs');
 const util = require('util');
 
 
-const users = require('./dataBase/users.json');
+const {users} = require('./dataBase/users.json');
 const {PORT} = require('./config/variables');
 
 const app = express();
@@ -23,56 +23,61 @@ app.listen(PORT, () => console.log(`App listen ${PORT}`));
 // test point
 app.get('/ping', (req, res) => res.json('pong'));
 
-app.get('/', (req, res) => {res.redirect('/main')});
+app.get('/', (req, res) => {
+    res.redirect('/main')
+});
 
-app.get('/main', (req, res) => {res.render('main', {users})});
+app.get('/main', (req, res) => {
+    res.render('main', {users})
+});
 
 app.post('/main', ((req, res) => {
-    const {name} = req.body
-    for (let i = 0; i < users.length; i++) {
-        if (users[i].name === name) {
-            res.redirect(`/user-by-id/${i}`)
-        }
-    }
+    const {name} = req.body;
+    const id = users.findIndex((value) => value.name === name);
+    if (id > -1) return res.redirect(`/user-by-id/${id}`)
 }));
 
-app.get('/users', (req, res) => {res.render('users', {users})});
+
+app.get('/users', (req, res) => {
+    res.render('users', {users})
+});
 
 app.get('/user-by-id/:id', (req, res) => {
     const {id} = req.params;
     res.send(users[id]);
 });
 
-app.get('/users/:id', (req, res) => {
+app.get('/calculator/:id', (req, res) => {
     const {id} = req.params;
     const {name} = users[id];
-res.render('calculator', {name});
+    res.render('calculator', {name});
 });
 
-function calculator (v1,operator, v2){
-switch (operator) {
-    case '+':
-        return  v1 + v2
-    case '-':
-        return  v1 - v2
-    case '*':
-        return  v1 / v2
-    case '/':
-        return  v1 * v2
-    default:
-        return 'Invalid operation'
-}}
-app.post('/users/:id', (req, res) => {
-    const {value1, operator,value2} = req.body;
+function calculator(value1, value2, operator) {
+    switch (operator) {
+        case '+':
+            return value1 + value2;
+        case '-':
+            return value1 - value2;
+        case '*':
+            return value1 / value2;
+        case '/':   return  value2!==0 ?  value1 * value2: 'Invalid operation';
+             default:
+            return 'Invalid operation'
+    }
+}
+
+app.post('/calculator/:id', (req, res) => {
+    const {value1, operator, value2} = req.body;
     const {id} = req.params;
     const {name} = users[id];
-    const v1=+value1;
-    const v2=+value2;
-const result = calculator(v1,operator, v2)
+    const result = calculator(+value1, +value2, operator)
     res.render('calculator', {name, result})
 });
 
-app.get('/authentication', (req, res) => {res.render('login')});
+app.get('/authentication', (req, res) => {
+    res.render('login')
+});
 
 const writeFile = util.promisify(fs.writeFile);
 
@@ -83,15 +88,14 @@ async function saveNewUser(name, password) {
     } catch (error) {
         (console.log(error))
     }
-    }
+}
 
 app.post('/authentication', ((req, res) => {
     const {name, password} = req.body;
-    let status = null;
-    for (let i = 0; i < users.length; i++) {
-        if (users[i].name === name && users[i].password === password) {status= i}}
-    status !== null ? res.redirect(`/users/${status}`) : res.redirect(`/registration`)
+    const id = users.findIndex((value) => value.name === name && value.password === password);
+    (id > -1) ? res.redirect(`/calculator/${id}`) : res.redirect(`/registration`)
 }));
+
 
 app.get('/registration', (req, res) => {
     res.render('registration')
@@ -99,27 +103,8 @@ app.get('/registration', (req, res) => {
 
 app.post('/registration', ((req, res) => {
     const {name, password} = req.body
-    let status = false;
-    for (let i = 0; i < users.length; i++) {
-        if (users[i].name === name) {
-            status = true
-        }
-    }
-    if (status) {
-        res.redirect(`/authentication`)
-    } else {
-        saveNewUser(name, password).then(() => console.log('Saved!'));
-        res.redirect(`/authentication`)
-    }}))
-
-// ------------------------------
-
-// function saveNewUser(name, password) {
-//     return new Promise((resolve, reject) => {
-//         users.push({name: name, password: password})
-//         fs.writeFile(path.join('dataBase', 'users.json'), JSON.stringify(users), (err) => {
-//             if (err) reject(err)
-//             resolve("File saved.")
-//         })
-//     });
-// }
+    const id = users.findIndex((value) => value.name === name);
+    if (id > -1) return res.redirect(`/authentication`);
+    saveNewUser(name, password).then(() => console.log('Saved!'));
+    res.redirect(`/authentication`)
+}))
