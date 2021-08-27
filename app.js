@@ -2,14 +2,14 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 
-const { PORT } = require('./config/variables');
+const { PORT, MONGODB_LINK } = require('./config/variables');
 
 const { NOT_FOUND, SERVER_ERROR } = require('./config/statusCodes');
 const { NOT_FOUND_M } = require('./config/statusMessages');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/lesson4');
+mongoose.connect(MONGODB_LINK);
 
 const {
     carsRouter,
