@@ -56,13 +56,16 @@ function shiftFile(pathDir, file, folder) {
 
 // -------------------------------- sorting files
 
+const folder18 = '18_00';
+const folder20 = '20_00';
+
 function sortFiles() {
     // reading list of directories & filtering it
     const directoriesInDirectory = fs.readdirSync(appDir, { withFileTypes: true });
 
     const filteredListOfDir = directoriesInDirectory
-        .filter((item) => !item.name.includes('.')
-            && !item.name.includes('node_modules')
+        .filter((item) => item.name.includes(folder18)
+            && item.name.includes(folder20)
             && item.isDirectory())
         .map((item) => item.name);
 
@@ -82,11 +85,11 @@ function sortFiles() {
                 }
 
                 if (data.includes('female')) {
-                    return shiftFile(dir, file, '18_00');
+                    return shiftFile(dir, file, folder18);
                 }
 
                 if (data.includes('male')) {
-                    return shiftFile(dir, file, '20_00');
+                    return shiftFile(dir, file, folder20);
                 }
             });
         });
@@ -98,3 +101,9 @@ for (let i = 0; i < 10; i++) {
 }
 
 sortFiles();
+
+// const filteredListOfDir = directoriesInDirectory
+//     .filter((item) => !item.name.includes('.')
+//         && !item.name.includes('node_modules')
+//         && item.isDirectory())
+//     .map((item) => item.name);
