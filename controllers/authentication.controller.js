@@ -7,9 +7,13 @@ const authenticationController = {
 
             const { user } = req;
 
+            const temp = JSON.stringify(user._id);
+
+            const user_id = JSON.parse(temp);
+
             await passwordService.matchPassword(password, user.password);
 
-            res.redirect(`/users/${user._id}`);
+            res.redirect(`users/${user_id}`);
         } catch (e) {
             next(e);
         }

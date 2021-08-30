@@ -13,9 +13,11 @@ const { loginValidator } = require('../validators/user.validator');
 const authenticationMiddleware = {
     verifyUserLogin: (req, res, next) => {
         try {
+            console.log(req.body);
             const { error } = loginValidator.validate(req.body);
 
             if (error) {
+                console.log(error);
                 throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
             }
 
