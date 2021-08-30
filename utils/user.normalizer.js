@@ -6,6 +6,7 @@ module.exports = {
             '_id'
         ];
 
+        userToNormalize = userToNormalize.toJSON();
         fieldsToRemove.forEach((field) => {
             delete userToNormalize[field];
         });
