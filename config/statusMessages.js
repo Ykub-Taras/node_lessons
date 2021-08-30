@@ -11,5 +11,6 @@ module.exports = {
     BRAND_CONFLICT: 'Such brand exist',
     BAD_PRICE: 'Invalid price',
     BAD_YEAR: 'Wrong year',
-    NOT_FOUND_M: 'Not found'
+    NOT_FOUND_M: 'Not found',
+    WRONG_AUTH: 'Email or password is wrong'
 };

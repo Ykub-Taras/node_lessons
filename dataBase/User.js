@@ -13,13 +13,19 @@ const userSchema = new Schema(
             unique: true,
             trim: true
         },
+        password: {
+            type: String,
+            required: true,
+            trim: true,
+            select: false
+        },
         address: {
             type: String,
             required: true,
             trim: true
         },
         phone: {
-            type: String,
+            type: Number,
             required: true
         }
     }, { timestamps: true }
