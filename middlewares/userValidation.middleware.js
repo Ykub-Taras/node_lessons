@@ -36,7 +36,6 @@ module.exports = {
     emailValidation: async (req, res, next) => {
         try {
             const { email } = req.body;
-
             const emailSaved = await User.findOne({ email });
 
             if (emailSaved) {
