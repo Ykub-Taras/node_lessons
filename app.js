@@ -12,6 +12,7 @@ const app = express();
 mongoose.connect(MONGODB_LINK);
 
 const {
+    authenticationRouter,
     carsRouter,
     usersRouter
 } = require('./routes');
@@ -25,6 +26,8 @@ app.listen(PORT, () => console.log(`App listen ${PORT}`));
 app.get('/ping', (req, res) => res.json('pong')); // test point
 
 // option without rendering
+
+app.use('/authentication', authenticationRouter);
 
 app.use('/users', usersRouter);
 

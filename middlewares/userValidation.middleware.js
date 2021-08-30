@@ -8,6 +8,8 @@ const {
     NO_DATA, BAD_DATA, EMAIL_CONFLICT, WRONG_ID, EMPTY_BASE
 } = require('../config/statusMessages');
 
+const { createUserValidator, updateUserValidator } = require('../validators/user.validator');
+
 module.exports = {
 
     valuesValidation: (req, res, next) => {
@@ -44,7 +46,7 @@ module.exports = {
     idValidation: async (req, res, next) => {
         try {
             const { user_id } = req.params;
-            const foundUser = await User.findOne(user_id);
+            const foundUser = await User.findOne(user_id).select('+password');
             if (!foundUser) {
                 throw new ErrorHandler(BAD_REQUEST, WRONG_ID);
             }
@@ -66,5 +68,31 @@ module.exports = {
         } catch (e) {
             next(e);
         }
+    },
+
+    checkDataForCreateUser: (req, res, next) => {
+        try {
+            const { error } = createUserValidator.validate(req.body);
+            if (error) {
+                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+            }
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkDataForUpdateUser: (req, res, next) => {
+        try {
+            const { error } = updateUserValidator.validate(req.body);
+
+            if (error) {
+                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+            }
+            next();
+        } catch (e) {
+            next(e);
+        }
     }
+
 };
