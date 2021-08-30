@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const util = require('util');
 
-const { users } = require('./dataBase/users.json');
+const users = require('./dataBase/users.json');
 const { PORT } = require('./config/variables');
 
 const app = express();
