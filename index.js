@@ -32,7 +32,9 @@ app.get('/main', (req, res) => {
 
 app.post('/main', ((req, res) => {
     const { name } = req.body;
+
     const id = users.findIndex((value) => value.name === name);
+
     if (id > -1) return res.redirect(`/user-by-id/${id}`);
 }));
 
@@ -42,12 +44,15 @@ app.get('/users', (req, res) => {
 
 app.get('/user-by-id/:id', (req, res) => {
     const { id } = req.params;
+
     res.send(users[id]);
 });
 
 app.get('/calculator/:id', (req, res) => {
     const { id } = req.params;
+
     const { name } = users[id];
+
     res.render('calculator', { name });
 });
 
@@ -68,9 +73,13 @@ function calculator(value1, value2, operator) {
 
 app.post('/calculator/:id', (req, res) => {
     const { value1, operator, value2 } = req.body;
+
     const { id } = req.params;
+
     const { name } = users[id];
+
     const result = calculator(+value1, +value2, operator);
+
     res.render('calculator', { name, result });
 });
 
@@ -83,15 +92,18 @@ const writeFile = util.promisify(fs.writeFile);
 async function saveNewUser(name, password) {
     try {
         await users.push({ name, password });
+
         await writeFile(path.join('dataBase', 'users.json'), JSON.stringify(users));
     } catch (error) {
-        (console.log(error));
+        console.log(error);
     }
 }
 
 app.post('/authentication', ((req, res) => {
     const { name, password } = req.body;
+
     const id = users.findIndex((value) => value.name === name && value.password === password);
+
     (id > -1) ? res.redirect(`/calculator/${id}`) : res.redirect('/registration');
 }));
 
@@ -101,8 +113,12 @@ app.get('/registration', (req, res) => {
 
 app.post('/registration', ((req, res) => {
     const { name, password } = req.body;
+
     const id = users.findIndex((value) => value.name === name);
+
     if (id > -1) return res.redirect('/authentication');
+
     saveNewUser(name, password).then(() => console.log('Saved!'));
+
     res.redirect('/authentication');
 }));
