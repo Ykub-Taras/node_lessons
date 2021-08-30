@@ -13,7 +13,6 @@ mongoose.connect(MONGODB_LINK);
 
 const {
     authenticationRouter,
-    carsRouter,
     usersRouter
 } = require('./routes');
 
@@ -30,8 +29,6 @@ app.get('/ping', (req, res) => res.json('pong')); // test point
 app.use('/authentication', authenticationRouter);
 
 app.use('/users', usersRouter);
-
-app.use('/cars', carsRouter);
 
 app.use('*', _notFoundError);
 
