@@ -50,27 +50,3 @@ function _notFoundError(error, req, res, next) {
 function _errorHandler(error, req, res, next) {
     res.status(error.status || SERVER_ERROR).json({ message: error.message });
 }
-
-// ДЗ:
-// Вам необхідно реалізувати CRUD на дві сутності (user, car)
-// Мають бути реалізовані такі методи:
-// 1) Create user
-// 2) Get all users
-// 3) Get user by id
-// 4) Delete current user
-// 5) Update user
-// Все це має бути розбито по роутах, контроллерах, сервісах з обовязковою перевіркою всього що приходить через мідлвари.
-// Також всі меджік стрінги мають бути винесені в константи.
-// додати errorHandler
-
-// #Практическая
-// создать схему RetroCar c такими полями
-// - brand
-// - model
-// - year
-// - price
-// произвести валидации:
-// год должен быть в диапазоне 1885-1980
-// цена не меньше 0
-// brand уникальный
-// + CRUD

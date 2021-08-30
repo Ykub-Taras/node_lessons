@@ -7,7 +7,7 @@ const ErrorHandler = require('../errors/ErrorHandler');
 
 module.exports = {
 
-    hashPassword: (password) => { bcrypt.hash(password, 10); },
+    hashPassword: (password) => bcrypt.hash(password, 10),
 
     matchPassword: async (password, hash) => {
         const isPassMatched = await bcrypt.compare(password, hash);

@@ -10,9 +10,9 @@ const createUserValidator = Joi.object({
 
     email: Joi.string().regex(EMAIL_REGEXP).trim().required(),
 
-    address: Joi.string().alphanum().min(5).max(30).trim().required(),
+    address: Joi.string().alphanum().min(3).max(30).trim().required(),
 
-    phone: Joi.number().min(10).max(10).required()
+    phone: Joi.string().min(8).max(10).required()
 
 });
 
