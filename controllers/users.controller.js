@@ -16,7 +16,7 @@ module.exports = {
 
     getUserById: (req, res) => {
         const user = req.foundUser;
-
+        // console.log(user)
         const normalizedUser = userNormalizer(user);
 
         res.json(normalizedUser);
