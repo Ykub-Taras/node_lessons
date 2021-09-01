@@ -1,19 +1,33 @@
-const router = require('express').Router();
+const router = require('express')
+    .Router();
 
 const { usersController } = require('../controllers');
 
 const {
-    checkBaseConsistent, idValidation, valuesValidation, emailValidation, checkDataForCreateUser, checkDataForUpdateUser
-} = require('../middlewares/userValidation.middleware');
+    userMiddleware: {
+        checkDataForCreateUser,
+        checkDataForUpdateUser,
+        getUserByDynamicParam,
+        emailValidation,
+        idValidation
+    }
+} = require('../middlewares');
 
-router.get('/', checkBaseConsistent, usersController.getAllUsers);
+router.get('/', usersController.getAllUsers);
+router.post('/',
+    checkDataForCreateUser,
+    emailValidation,
+    usersController.createUser);
 
-router.get('/:id', idValidation, usersController.getUserById);
-
-router.post('/', valuesValidation, emailValidation, checkDataForCreateUser, usersController.createUser);
-
-router.post('/:id', idValidation, checkDataForUpdateUser, usersController.updateUser);
-
-router.delete('/:id', idValidation, usersController.deleteUser);
+router.get('/:id',
+    getUserByDynamicParam('id', 'params', '_id'),
+    usersController.getUserById);
+router.patch('/:id',
+    checkDataForUpdateUser,
+    idValidation,
+    usersController.updateUser);
+router.delete('/:id',
+    idValidation,
+    usersController.deleteUser);
 
 module.exports = router;

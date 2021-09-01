@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 
+require('dotenv').config();
+
 const { PORT, MONGODB_LINK } = require('./config/variables');
 
 const { NOT_FOUND, SERVER_ERROR } = require('./config/statusCodes');
@@ -13,6 +15,7 @@ mongoose.connect(MONGODB_LINK);
 
 const {
     authenticationRouter,
+    carsRouter,
     usersRouter
 } = require('./routes');
 
@@ -21,17 +24,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.listen(PORT, () => console.log(`App listen ${PORT}`));
+// console.log(process.env);
 
 app.get('/ping', (req, res) => res.json('pong')); // test point
 
 // option without rendering
 
 app.use('/authentication', authenticationRouter);
-
+app.use('/cars', carsRouter);
 app.use('/users', usersRouter);
 
 app.use('*', _notFoundError);
-
 app.use(_errorHandler);
 
 // ---------- Error handlers ---------

@@ -1,16 +1,22 @@
 const User = require('../dataBase/User');
 
-const { CREATED, ACCEPTED, NO_CONTENT } = require('../config/statusCodes');
+const {
+    CREATED,
+    ACCEPTED,
+    NO_CONTENT
+} = require('../config/statusCodes');
 
-const { USER_UPDATED, USER_DELETED } = require('../config/statusMessages');
+const {
+    USER_DELETED
+} = require('../config/statusMessages');
 
 const { userNormalizer } = require('../utils/user.normalizer');
 
 const { hashPassword } = require('../services/password.service');
 
 module.exports = {
-    getAllUsers: (req, res) => {
-        const users = req.base;
+    getAllUsers: async (req, res) => {
+        const users = await User.find();
         res.json(users);
     },
 
@@ -28,11 +34,15 @@ module.exports = {
 
             const hPassword = await hashPassword(password);
 
-            const newUser = await User.create({ ...req.body, password: hPassword });
+            const newUser = await User.create({
+                ...req.body,
+                password: hPassword
+            });
 
             const normalizedUser = userNormalizer(newUser);
 
-            res.status(CREATED).json(normalizedUser);
+            res.status(CREATED)
+                .json(normalizedUser);
         } catch (e) {
             next(e);
         }
@@ -40,17 +50,18 @@ module.exports = {
 
     updateUser: async (req, res) => {
         const { id } = req.params;
-
-        const updatedUser = await User.findByIdAndUpdate(id, req.body);
+        const updateObject = req.body;
+        const updatedUser = await User.findByIdAndUpdate(id, { $set: updateObject });
 
         const normalizedUser = userNormalizer(updatedUser);
-
-        res.status(ACCEPTED).json(USER_UPDATED, normalizedUser);
+        // res.json(updatedUser);
+        res.status(ACCEPTED).json(normalizedUser);
     },
 
     deleteUser: async (req, res) => {
         const { id } = req.params;
         await User.deleteOne({ id });
-        res.status(NO_CONTENT).json(USER_DELETED);
+        res.status(NO_CONTENT)
+            .json(USER_DELETED);
     }
 };
