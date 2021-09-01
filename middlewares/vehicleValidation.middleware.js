@@ -1,4 +1,4 @@
-const Car = require('../dataBase/Car');
+const { Car } = require('../dataBase');
 
 const ErrorHandler = require('../errors/ErrorHandler');
 

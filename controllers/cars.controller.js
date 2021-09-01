@@ -1,4 +1,4 @@
-const Car = require('../dataBase/Car');
+const { Car } = require('../dataBase');
 
 const { CREATED, ACCEPTED, NO_CONTENT } = require('../config/statusCodes');
 
