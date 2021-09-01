@@ -13,7 +13,8 @@ const {
     }
 } = require('../middlewares');
 
-router.get('/', usersController.getAllUsers);
+router.get('/',
+    usersController.getAllUsers);
 router.post('/',
     checkDataForCreateUser,
     emailValidation,
