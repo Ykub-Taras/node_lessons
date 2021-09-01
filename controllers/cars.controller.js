@@ -1,8 +1,17 @@
 const { Car } = require('../dataBase');
 
-const { CREATED, ACCEPTED, NO_CONTENT } = require('../config/statusCodes');
+const {
+    statusCodes: {
+        CREATED,
+        ACCEPTED,
+        NO_CONTENT
+    },
+    statusMessages: {
+        CAR_UPDATED,
+        CAR_DELETED
+    }
+} = require('../config');
 
-const { CAR_UPDATED, CAR_DELETED } = require('../config/statusMessages');
 const { carNormalizer } = require('../utils');
 
 module.exports = {

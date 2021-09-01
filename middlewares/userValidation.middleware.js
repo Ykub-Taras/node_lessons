@@ -1,17 +1,18 @@
 const { User } = require('../dataBase');
 
-const ErrorHandler = require('../errors/ErrorHandler');
+const { ErrorHandler } = require('../errors');
 
 const {
-    BAD_REQUEST,
-    CONFLICT
-} = require('../config/statusCodes');
-
-const {
-    BAD_DATA,
-    EMAIL_CONFLICT,
-    WRONG_ID,
-} = require('../config/statusMessages');
+    statusMessages: {
+        BAD_DATA,
+        EMAIL_CONFLICT,
+        WRONG_ID
+    },
+    statusCodes: {
+        BAD_REQUEST,
+        CONFLICT
+    }
+} = require('../config');
 
 const {
     userValidator: {

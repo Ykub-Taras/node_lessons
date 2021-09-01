@@ -1,16 +1,17 @@
 const { Car } = require('../dataBase');
 
-const ErrorHandler = require('../errors/ErrorHandler');
+const { ErrorHandler } = require('../errors');
 
 const {
-    BAD_REQUEST,
-    CONFLICT,
-} = require('../config/statusCodes');
-
-const {
-    WRONG_ID,
-    BRAND_CONFLICT,
-} = require('../config/statusMessages');
+    statusCodes: {
+        BAD_REQUEST,
+        CONFLICT
+    },
+    statusMessages: {
+        WRONG_ID,
+        BRAND_CONFLICT
+    }
+} = require('../config');
 
 const {
     carsValidator: {

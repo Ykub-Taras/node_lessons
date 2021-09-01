@@ -2,12 +2,23 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 
-require('dotenv').config();
+require('dotenv')
+    .config();
 
-const { PORT, MONGODB_LINK } = require('./config/variables');
+const {
+    variables: {
+        PORT,
+        MONGODB_LINK
+    }
+} = require('./config');
 
-const { NOT_FOUND, SERVER_ERROR } = require('./config/statusCodes');
-const { NOT_FOUND_M } = require('./config/statusMessages');
+const {
+    statusCodes: {
+        NOT_FOUND,
+        SERVER_ERROR
+    },
+    statusMessages: { NOT_FOUND_M }
+} = require('./config');
 
 const app = express();
 
@@ -48,5 +59,6 @@ function _notFoundError(error, req, res, next) {
 
 // eslint-disable-next-line no-unused-vars
 function _errorHandler(error, req, res, next) {
-    res.status(error.status || SERVER_ERROR).json({ message: error.message });
+    res.status(error.status || SERVER_ERROR)
+        .json({ message: error.message });
 }

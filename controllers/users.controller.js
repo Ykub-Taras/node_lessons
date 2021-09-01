@@ -1,18 +1,19 @@
-const User = require('../dataBase/User');
+const { User } = require('../dataBase');
 
 const {
-    CREATED,
-    ACCEPTED,
-    NO_CONTENT
-} = require('../config/statusCodes');
-
-const {
-    USER_DELETED
-} = require('../config/statusMessages');
+    statusCodes: {
+        CREATED,
+        ACCEPTED,
+        NO_CONTENT
+    },
+    statusMessages: {
+        USER_DELETED
+    }
+} = require('../config');
 
 const { userNormalizer } = require('../utils');
 
-const { hashPassword } = require('../services/password.service');
+const { passwordService: { hashPassword } } = require('../services');
 
 module.exports = {
     getAllUsers: async (req, res) => {

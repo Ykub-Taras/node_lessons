@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { authenticationController } = require('../controllers/index');
+const { authenticationController } = require('../controllers');
 const {
     authenticationMiddleware: {
         verifyUserLogin,

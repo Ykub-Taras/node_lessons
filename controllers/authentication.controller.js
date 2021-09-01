@@ -1,4 +1,4 @@
-const passwordService = require('../services/password.service');
+const { passwordService: { matchPassword } } = require('../services');
 
 const authenticationController = {
     userLogin: async (req, res, next) => {
@@ -11,7 +11,7 @@ const authenticationController = {
 
             const user_id = JSON.parse(temp);
 
-            await passwordService.matchPassword(password, user.password);
+            await matchPassword(password, user.password);
 
             res.redirect(`users/${user_id}`);
         } catch (e) {

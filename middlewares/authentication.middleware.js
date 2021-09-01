@@ -1,14 +1,19 @@
 const { User } = require('../dataBase');
 
-const ErrorHandler = require('../errors/ErrorHandler');
-
-const { BAD_REQUEST, NOT_FOUND } = require('../config/statusCodes');
+const { ErrorHandler } = require('../errors');
 
 const {
-    BAD_DATA, EMAIL_CONFLICT
-} = require('../config/statusMessages');
+    statusCodes: {
+        BAD_REQUEST,
+        NOT_FOUND
+    },
+    statusMessages: {
+        BAD_DATA,
+        EMAIL_CONFLICT
+    }
+} = require('../config');
 
-const { loginValidator } = require('../validators/user.validator');
+const { userValidator: { loginValidator } } = require('../validators');
 
 const authenticationMiddleware = {
     verifyUserLogin: (req, res, next) => {
