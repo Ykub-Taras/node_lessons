@@ -10,7 +10,7 @@ const {
     USER_DELETED
 } = require('../config/statusMessages');
 
-const { userNormalizer } = require('../utils/user.normalizer');
+const { userNormalizer } = require('../utils');
 
 const { hashPassword } = require('../services/password.service');
 

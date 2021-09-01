@@ -14,5 +14,4 @@ module.exports = {
 
         if (!isPassMatched) { throw new ErrorHandler(UNAUTHORIZED, WRONG_AUTH); }
     }
-
 };

@@ -3,7 +3,7 @@ const { Car } = require('../dataBase');
 const { CREATED, ACCEPTED, NO_CONTENT } = require('../config/statusCodes');
 
 const { CAR_UPDATED, CAR_DELETED } = require('../config/statusMessages');
-const { carNormalizer } = require('../utils/user.normalizer');
+const { carNormalizer } = require('../utils');
 
 module.exports = {
     getAllCars: async (req, res) => {
