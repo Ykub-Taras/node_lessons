@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const { variables: { users } } = require('../config');
+const { variables: { USERS } } = require('../config');
 
 const userSchema = new Schema(
     {
@@ -33,4 +33,4 @@ const userSchema = new Schema(
     }, { timestamps: true }
 );
 
-module.exports = model(users, userSchema);
+module.exports = model(USERS, userSchema);

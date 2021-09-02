@@ -4,12 +4,12 @@ module.exports = {
     MONGODB_LINK: process.env.MONGODB_LINK || 'mongodb://localhost:27017/lesson6',
 
     // MODEL variables:
-    users: 'users',
-    retroCars: 'retroCars',
+    USERS: 'users',
+    RETRO_CARS: 'retroCars',
 
     //    ARGUMENTS for functions
-    var_body: 'body',
-    var_id: 'id',
-    var_id_db_field: '_id',
-    var_params: 'params'
+    VAR_BODY: 'body',
+    VAR_ID: 'id',
+    VAR_ID_DB_FIELD: '_id',
+    VAR_PARAMS: 'params'
 };

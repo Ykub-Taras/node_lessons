@@ -27,7 +27,7 @@ module.exports = {
             const { error } = createCarValidator.validate(req.body);
 
             if (error) {
-                return next(new ErrorHandler(BAD_REQUEST, error.details[0].message));
+                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
             }
 
             next();
@@ -41,7 +41,7 @@ module.exports = {
             const { error } = updateCarValidator.validate(req.body);
 
             if (error) {
-                return next(new ErrorHandler(BAD_REQUEST, error.details[0].message));
+                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
             }
 
             next();
@@ -56,7 +56,7 @@ module.exports = {
             const brandSaved = await Car.findOne({ brand });
 
             if (brandSaved) {
-                return next(new ErrorHandler(CONFLICT, BRAND_CONFLICT));
+                throw new ErrorHandler(CONFLICT, BRAND_CONFLICT);
             }
 
             next();
@@ -71,7 +71,7 @@ module.exports = {
             const foundCar = await Car.findByIdAndUpdate(id);
 
             if (!foundCar) {
-                return next(new ErrorHandler(BAD_REQUEST, WRONG_ID));
+                throw new ErrorHandler(BAD_REQUEST, WRONG_ID);
             }
 
             req.foundCar = foundCar;

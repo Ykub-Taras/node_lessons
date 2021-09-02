@@ -21,7 +21,7 @@ const authenticationMiddleware = {
             const { error } = loginValidator.validate(req.body);
 
             if (error) {
-                return next(new ErrorHandler(BAD_REQUEST, BAD_DATA));
+                throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
             }
 
             next();
@@ -37,7 +37,7 @@ const authenticationMiddleware = {
                 .select('+password');
 
             if (!savedData) {
-                return next(new ErrorHandler(NOT_FOUND, EMAIL_CONFLICT));
+                throw new ErrorHandler(NOT_FOUND, EMAIL_CONFLICT);
             }
 
             req.user = savedData;

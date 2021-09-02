@@ -14,28 +14,28 @@ const {
 const { carNormalizer } = require('../utils');
 
 module.exports = {
-    getAllCars: async (req, res) => {
+    getAllCars: async (req, res, next) => {
         try {
             const cars = await Car.find();
 
             res.json(cars);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
 
-    getCarById: (req, res) => {
+    getCarById: (req, res, next) => {
         try {
             const car = req.foundCar;
             const normalizedCar = carNormalizer(car);
 
             res.json(normalizedCar);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
 
-    createCar: async (req, res) => {
+    createCar: async (req, res, next) => {
         try {
             const newCar = await Car.create(req.body);
             const normalizedCar = carNormalizer(newCar);
@@ -43,11 +43,11 @@ module.exports = {
             res.status(CREATED)
                 .json(normalizedCar);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
 
-    updateCar: async (req, res) => {
+    updateCar: async (req, res, next) => {
         try {
             const {
                 params: { id },
@@ -63,11 +63,11 @@ module.exports = {
             res.status(ACCEPTED)
                 .json(normalizedCar);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
 
-    deleteCar: async (req, res) => {
+    deleteCar: async (req, res, next) => {
         try {
             const { id } = req.params;
 
@@ -76,7 +76,7 @@ module.exports = {
             res.status(NO_CONTENT)
                 .json(CAR_DELETED);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     }
 };

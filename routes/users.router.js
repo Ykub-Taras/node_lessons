@@ -13,9 +13,9 @@ const {
 } = require('../middlewares');
 
 const {
-    var_id,
-    var_id_db_field,
-    var_params
+    VAR_ID,
+    VAR_ID_DB_FIELD,
+    VAR_PARAMS
 } = require('../config/variables');
 
 router.get('/',
@@ -26,14 +26,14 @@ router.post('/',
     usersController.createUser);
 
 router.get('/:id',
-    getUserByDynamicParam(var_id, var_params, var_id_db_field),
+    getUserByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
     usersController.getUserById);
 router.patch('/:id',
     checkDataForUpdateUser,
-    getUserByDynamicParam(var_id, var_params, var_id_db_field),
+    getUserByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
     usersController.updateUser);
 router.delete('/:id',
-    getUserByDynamicParam(var_id, var_params, var_id_db_field),
+    getUserByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
     usersController.deleteUser);
 
 module.exports = router;

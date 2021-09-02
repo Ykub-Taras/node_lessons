@@ -16,28 +16,28 @@ const { userNormalizer } = require('../utils');
 const { passwordService: { hashPassword } } = require('../services');
 
 module.exports = {
-    getAllUsers: async (req, res) => {
+    getAllUsers: async (req, res, next) => {
         try {
             const users = await User.find();
 
             res.json(users);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
 
-    getUserById: (req, res) => {
+    getUserById: (req, res, next) => {
         try {
             const user = req.foundUser;
             const normalizedUser = userNormalizer(user);
 
             res.json(normalizedUser);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
 
-    createUser: async (req, res) => {
+    createUser: async (req, res, next) => {
         try {
             const { password } = req.body;
 
@@ -53,11 +53,11 @@ module.exports = {
             res.status(CREATED)
                 .json(normalizedUser);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
 
-    updateUser: async (req, res) => {
+    updateUser: async (req, res, next) => {
         try {
             const {
                 params: { id },
@@ -70,11 +70,11 @@ module.exports = {
             res.status(ACCEPTED)
                 .json(normalizedUser);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
 
-    deleteUser: async (req, res) => {
+    deleteUser: async (req, res, next) => {
         try {
             const { id } = req.params;
 
@@ -83,7 +83,7 @@ module.exports = {
             res.status(NO_CONTENT)
                 .json(USER_DELETED);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     }
 };

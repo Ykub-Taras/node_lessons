@@ -28,7 +28,7 @@ module.exports = {
             const emailSaved = await User.findOne({ email });
 
             if (emailSaved) {
-                return next(new ErrorHandler(CONFLICT, EMAIL_CONFLICT));
+                throw new ErrorHandler(CONFLICT, EMAIL_CONFLICT);
             }
 
             next();
@@ -42,7 +42,7 @@ module.exports = {
             const { error } = createUserValidator.validate(req.body);
 
             if (error) {
-                return next(new ErrorHandler(BAD_REQUEST, error.details[0].message));
+                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
             }
 
             next();
@@ -56,7 +56,7 @@ module.exports = {
             const { error } = updateUserValidator.validate(req.body);
 
             if (error) {
-                return next(new ErrorHandler(BAD_REQUEST, error.details[0].message));
+                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
             }
 
             next();
@@ -72,7 +72,7 @@ module.exports = {
             const foundUser = await User.findOne({ [dbFiled]: value });
 
             if (!foundUser) {
-                return next(new ErrorHandler(BAD_REQUEST, BAD_DATA));
+                throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
             }
 
             req.foundUser = foundUser;
