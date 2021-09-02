@@ -3,13 +3,11 @@ const { passwordService: { matchPassword } } = require('../services');
 const authenticationController = {
     userLogin: async (req, res, next) => {
         try {
-            const { password } = req.body;
-
-            const { user } = req;
-
-            const temp = JSON.stringify(user._id);
-
-            const user_id = JSON.parse(temp);
+            const {
+                body: { password },
+                user
+            } = req;
+            const user_id = JSON.parse(JSON.stringify(user._id));
 
             await matchPassword(password, user.password);
 

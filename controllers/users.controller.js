@@ -17,19 +17,27 @@ const { passwordService: { hashPassword } } = require('../services');
 
 module.exports = {
     getAllUsers: async (req, res) => {
-        const users = await User.find();
-        res.json(users);
+        try {
+            const users = await User.find();
+
+            res.json(users);
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     getUserById: (req, res) => {
-        const user = req.foundUser;
-        // console.log(user)
-        const normalizedUser = userNormalizer(user);
+        try {
+            const user = req.foundUser;
+            const normalizedUser = userNormalizer(user);
 
-        res.json(normalizedUser);
+            res.json(normalizedUser);
+        } catch (error) {
+            console.log(error);
+        }
     },
 
-    createUser: async (req, res, next) => {
+    createUser: async (req, res) => {
         try {
             const { password } = req.body;
 
@@ -44,25 +52,38 @@ module.exports = {
 
             res.status(CREATED)
                 .json(normalizedUser);
-        } catch (e) {
-            next(e);
+        } catch (error) {
+            console.log(error);
         }
     },
 
     updateUser: async (req, res) => {
-        const { id } = req.params;
-        const updateObject = req.body;
-        const updatedUser = await User.findByIdAndUpdate(id, { $set: updateObject });
+        try {
+            const {
+                params: { id },
+                body
+            } = req;
 
-        const normalizedUser = userNormalizer(updatedUser);
-        // res.json(updatedUser);
-        res.status(ACCEPTED).json(normalizedUser);
+            const updatedUser = await User.findByIdAndUpdate(id, { $set: body });
+            const normalizedUser = userNormalizer(updatedUser);
+
+            res.status(ACCEPTED)
+                .json(normalizedUser);
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     deleteUser: async (req, res) => {
-        const { id } = req.params;
-        await User.deleteOne({ id });
-        res.status(NO_CONTENT)
-            .json(USER_DELETED);
+        try {
+            const { id } = req.params;
+
+            await User.deleteOne({ id });
+
+            res.status(NO_CONTENT)
+                .json(USER_DELETED);
+        } catch (error) {
+            console.log(error);
+        }
     }
 };

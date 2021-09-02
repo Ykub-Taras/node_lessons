@@ -1,9 +1,11 @@
 const bcrypt = require('bcrypt');
 
-const { UNAUTHORIZED } = require('../config/statusCodes');
-const { WRONG_AUTH } = require('../config/statusMessages');
+const {
+    statusCodes: { UNAUTHORIZED },
+    statusMessages: { WRONG_AUTH }
+} = require('../config');
 
-const ErrorHandler = require('../errors/ErrorHandler');
+const { ErrorHandler } = require('../errors');
 
 module.exports = {
 

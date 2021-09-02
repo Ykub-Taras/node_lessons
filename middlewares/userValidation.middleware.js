@@ -5,8 +5,7 @@ const { ErrorHandler } = require('../errors');
 const {
     statusMessages: {
         BAD_DATA,
-        EMAIL_CONFLICT,
-        WRONG_ID
+        EMAIL_CONFLICT
     },
     statusCodes: {
         BAD_REQUEST,
@@ -29,26 +28,9 @@ module.exports = {
             const emailSaved = await User.findOne({ email });
 
             if (emailSaved) {
-                throw new ErrorHandler(CONFLICT, EMAIL_CONFLICT);
+                return next(new ErrorHandler(CONFLICT, EMAIL_CONFLICT));
             }
 
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    idValidation: async (req, res, next) => {
-        try {
-            const { id } = req.params;
-
-            const foundUser = await User.findById(id);
-
-            if (!foundUser) {
-                throw new ErrorHandler(BAD_REQUEST, WRONG_ID);
-            }
-
-            req.foundUser = foundUser;
             next();
         } catch (e) {
             next(e);
@@ -60,7 +42,7 @@ module.exports = {
             const { error } = createUserValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+                return next(new ErrorHandler(BAD_REQUEST, error.details[0].message));
             }
 
             next();
@@ -74,7 +56,7 @@ module.exports = {
             const { error } = updateUserValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+                return next(new ErrorHandler(BAD_REQUEST, error.details[0].message));
             }
 
             next();
@@ -90,7 +72,7 @@ module.exports = {
             const foundUser = await User.findOne({ [dbFiled]: value });
 
             if (!foundUser) {
-                throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
+                return next(new ErrorHandler(BAD_REQUEST, BAD_DATA));
             }
 
             req.foundUser = foundUser;
@@ -102,45 +84,3 @@ module.exports = {
     }
 
 };
-
-// ________________________________________________________
-
-// valuesValidation: (req, res, next) => {
-//     try {
-//         const {
-//             name, email, address, phone
-//         } = req.body;
-//
-//         if (!name || !email || !address || !phone) {
-//             throw new ErrorHandler(BAD_REQUEST, NO_DATA);
-//         }
-//
-//         // eslint-disable-next-line max-len
-//         if (typeof (name) !== 'string'
-//         || typeof (email) !== 'string'
-//         || typeof (address) !== 'string'
-//         || typeof (phone) !== 'string') {
-//             throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
-//         }
-//
-//         next();
-//     } catch (e) {
-//         next(e);
-//     }
-// },
-
-// checkBaseConsistent: async (req, res, next) => {
-//     try {
-//         const users = await User.find();
-//
-//         if (users.length === 0) {
-//             throw new ErrorHandler(NOT_FOUND, EMPTY_BASE);
-//         }
-//
-//         req.base = users;
-//
-//         next();
-//     } catch (e) {
-//         next(e);
-//     }
-// },

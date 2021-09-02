@@ -7,7 +7,6 @@ const {
         NO_CONTENT
     },
     statusMessages: {
-        CAR_UPDATED,
         CAR_DELETED
     }
 } = require('../config');
@@ -16,37 +15,68 @@ const { carNormalizer } = require('../utils');
 
 module.exports = {
     getAllCars: async (req, res) => {
-        const cars = await Car.find();
+        try {
+            const cars = await Car.find();
 
-        res.json(cars);
+            res.json(cars);
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     getCarById: (req, res) => {
-        const car = req.foundCar;
-        const normalizedCar = carNormalizer(car);
+        try {
+            const car = req.foundCar;
+            const normalizedCar = carNormalizer(car);
 
-        res.json(normalizedCar);
+            res.json(normalizedCar);
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     createCar: async (req, res) => {
-        const newCar = await Car.create(req.body);
-        res.status(CREATED).json(newCar);
+        try {
+            const newCar = await Car.create(req.body);
+            const normalizedCar = carNormalizer(newCar);
+
+            res.status(CREATED)
+                .json(normalizedCar);
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     updateCar: async (req, res) => {
-        const { id } = req.params;
-        const updateObject = req.body;
+        try {
+            const {
+                params: { id },
+                body
+            } = req;
 
-        const updatedCar = await Car.findByIdAndUpdate(id, { $set: updateObject });
+            await Car.findByIdAndUpdate(id, { $set: body });
 
-        const normalizedCar = carNormalizer(updatedCar);
+            const updatedCar = await Car.findById(id);
 
-        res.status(ACCEPTED).json(CAR_UPDATED, normalizedCar);
+            const normalizedCar = carNormalizer(updatedCar);
+
+            res.status(ACCEPTED)
+                .json(normalizedCar);
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     deleteCar: async (req, res) => {
-        const { id } = req.params;
-        await Car.deleteOne({ id });
-        res.status(NO_CONTENT).json(CAR_DELETED);
+        try {
+            const { id } = req.params;
+
+            await Car.deleteOne({ id });
+
+            res.status(NO_CONTENT)
+                .json(CAR_DELETED);
+        } catch (error) {
+            console.log(error);
+        }
     }
 };

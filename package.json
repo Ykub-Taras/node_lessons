@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "demon": "node app.js",
-    "start": "pm2 kill && pm2 start app.js --watch && pm2 monit"
+    "startw": "pm2 kill && pm2 start app.js --watch",
+    "startm": "pm2 kill && pm2 start app.js --watch && pm2 monit"
   },
   "dependencies": {
     "basic-calculator-js": "^1.0.1",

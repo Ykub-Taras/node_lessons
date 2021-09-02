@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose');
 
+const { variables: { retroCars } } = require('../config');
+
 const retroCarSchema = new Schema({
     brand: {
         type: String,
@@ -23,4 +25,4 @@ const retroCarSchema = new Schema({
 
 }, { timestamps: true });
 
-module.exports = model('retroCars', retroCarSchema);
+module.exports = model(retroCars, retroCarSchema);

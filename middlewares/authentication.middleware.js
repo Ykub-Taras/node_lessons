@@ -21,8 +21,7 @@ const authenticationMiddleware = {
             const { error } = loginValidator.validate(req.body);
 
             if (error) {
-                console.log(error);
-                throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
+                return next(new ErrorHandler(BAD_REQUEST, BAD_DATA));
             }
 
             next();
@@ -30,13 +29,17 @@ const authenticationMiddleware = {
             next(e);
         }
     },
+
     emailValidation: async (req, res, next) => {
         try {
             const { email } = req.body;
-            const savedData = await User.findOne({ email }).select('+password');
+            const savedData = await User.findOne({ email })
+                .select('+password');
+
             if (!savedData) {
-                throw new ErrorHandler(NOT_FOUND, EMAIL_CONFLICT);
+                return next(new ErrorHandler(NOT_FOUND, EMAIL_CONFLICT));
             }
+
             req.user = savedData;
             next();
         } catch (e) {

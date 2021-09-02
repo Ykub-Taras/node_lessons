@@ -27,7 +27,7 @@ module.exports = {
             const { error } = createCarValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+                return next(new ErrorHandler(BAD_REQUEST, error.details[0].message));
             }
 
             next();
@@ -41,7 +41,7 @@ module.exports = {
             const { error } = updateCarValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+                return next(new ErrorHandler(BAD_REQUEST, error.details[0].message));
             }
 
             next();
@@ -54,9 +54,11 @@ module.exports = {
         try {
             const { brand } = req.body;
             const brandSaved = await Car.findOne({ brand });
+
             if (brandSaved) {
-                throw new ErrorHandler(CONFLICT, BRAND_CONFLICT);
+                return next(new ErrorHandler(CONFLICT, BRAND_CONFLICT));
             }
+
             next();
         } catch (e) {
             next(e);
@@ -65,11 +67,13 @@ module.exports = {
 
     idValidation: async (req, res, next) => {
         try {
-            const { car_id } = req.params;
-            const foundCar = await Car.findOne(car_id);
+            const { id } = req.params;
+            const foundCar = await Car.findByIdAndUpdate(id);
+
             if (!foundCar) {
-                throw new ErrorHandler(BAD_REQUEST, WRONG_ID);
+                return next(new ErrorHandler(BAD_REQUEST, WRONG_ID));
             }
+
             req.foundCar = foundCar;
             next();
         } catch (e) {
@@ -78,42 +82,3 @@ module.exports = {
     },
 
 };
-
-// --------------------------------------------
-
-// yearValidation: (req, res, next) => {
-//     try {
-//         const { year } = req.body;
-//         if (year < 1885 || year > 1980) {
-//             throw new ErrorHandler(BAD_REQUEST, BAD_YEAR);
-//         }
-//         next();
-//     } catch (e) {
-//         next(e);
-//     }
-// },
-//
-// priceValidation: (req, res, next) => {
-//     try {
-//         const { price } = req.body;
-//         if (price < 0) {
-//             throw new ErrorHandler(BAD_REQUEST, BAD_PRICE);
-//         }
-//         next();
-//     } catch (e) {
-//         next(e);
-//     }
-// },
-
-// checkBaseConsistent: async (req, res, next) => {
-//     try {
-//         const cars = await Car.find();
-//         if (cars.length === 0) {
-//             throw new ErrorHandler(NOT_FOUND, EMPTY_BASE);
-//         }
-//         req.base = cars;
-//         next();
-//     } catch (e) {
-//         next(e);
-//     }
-// }
