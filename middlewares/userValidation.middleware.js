@@ -98,8 +98,6 @@ module.exports = {
             if ((role === 'user' || role === 'admin') && user._id === id) {
                 return next();
             }
-
-            next();
         } catch (e) {
             next(e);
         }
