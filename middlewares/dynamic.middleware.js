@@ -18,10 +18,8 @@ module.exports = {
         paramName, searchIn = 'body', dbFiled = paramName, password = false, uniqTrigger = false
     ) => async (req, res, next) => {
         try {
-            console.log(req.body.email);
-            console.log(dbFiled);
             const value = req[searchIn][paramName];
-            console.log(value);
+
             // Adding password to response if needed
             if (password) {
                 foundUser = await User.findOne({ [dbFiled]: value })
