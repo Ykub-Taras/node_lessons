@@ -65,7 +65,7 @@ const authenticationMiddleware = {
             if (!DB_token) {
                 throw new ErrorHandler(UNAUTHORIZED, WRONG_TOKEN);
             }
-            req.foundUser = DB_token.user;
+            req.user = DB_token.user;
             next();
         } catch (e) {
             next(e);

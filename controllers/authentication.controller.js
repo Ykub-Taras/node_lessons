@@ -51,7 +51,7 @@ const authenticationController = {
     refresh: async (req, res, next) => {
         try {
             const refresh_token = req.get(AUTHORIZATION);
-            const user = req.foundUser;
+            const { user } = req;
 
             await OAuth.deleteOne({ refresh_token });
 
