@@ -27,7 +27,10 @@ const authenticationController = {
             });
 
             const normalizedUser = userNormalizer(user);
-            res.json(...tokenPair, normalizedUser);
+            res.json({
+                ...tokenPair,
+                normalizedUser
+            });
         } catch (e) {
             next(e);
         }
@@ -60,7 +63,10 @@ const authenticationController = {
             });
 
             const normalizedUser = userNormalizer(user);
-            res.json(...tokenPair, normalizedUser);
+            res.json({
+                ...tokenPair,
+                normalizedUser
+            });
         } catch (e) {
             next(e);
         }
