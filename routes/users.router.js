@@ -22,12 +22,13 @@ const {
     dynamicMiddleware: { getDataByDynamicParam },
     authenticationMiddleware: { accessTokenValidation }
 } = require('../middlewares');
+const { VAR_BODY } = require('../config/variables');
 
 router.get('/',
     usersController.getAllUsers);
 router.post('/',
     checkDataForCreateUser,
-    getDataByDynamicParam(VAR_EMAIL, {}, {}, {}, true),
+    getDataByDynamicParam(VAR_EMAIL, VAR_BODY, VAR_EMAIL, true, true),
     usersController.createUser);
 
 router.get('/:id',

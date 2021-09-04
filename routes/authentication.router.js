@@ -17,10 +17,11 @@ const {
     dynamicMiddleware: { getDataByDynamicParam }
 } = require('../middlewares');
 const { variables: { VAR_EMAIL } } = require('../config');
+const { VAR_BODY } = require('../config/variables');
 
 router.post('/',
     verifyUserLogin,
-    getDataByDynamicParam(VAR_EMAIL, {}, {}, true),
+    getDataByDynamicParam(VAR_EMAIL, VAR_BODY, VAR_EMAIL, true),
     userLogin);
 
 router.post('/logout',
