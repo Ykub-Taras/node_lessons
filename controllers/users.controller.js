@@ -65,7 +65,8 @@ module.exports = {
                 body
             } = req;
 
-            const updatedUser = await User.findByIdAndUpdate(id, { $set: body });
+            const updatedUser = await User.findByIdAndUpdate(id, { $set: body }, { new: true });
+
             const normalizedUser = userNormalizer(updatedUser);
 
             res.status(ACCEPTED)
@@ -79,10 +80,9 @@ module.exports = {
         try {
             const { id } = req.params;
 
-            await User.deleteOne({ id });
+            await User.deleteOne({ _id: id });
 
-            res.status(NO_CONTENT)
-                .json(USER_DELETED);
+            res.status(NO_CONTENT).json(USER_DELETED);
         } catch (error) {
             next(error);
         }
