@@ -1,6 +1,12 @@
-const { Schema, model } = require('mongoose');
+const {
+    Schema,
+    model
+} = require('mongoose');
 
-const { variables: { USERS } } = require('../config');
+const {
+    variables: { USERS },
+    usersRoleENUM
+} = require('../config');
 
 const userSchema = new Schema(
     {
@@ -29,6 +35,11 @@ const userSchema = new Schema(
         phone: {
             type: String,
             required: true
+        },
+        role: {
+            type: String,
+            default: usersRoleENUM.USER,
+            enum: Object.values(usersRoleENUM)
         }
     }, { timestamps: true }
 );

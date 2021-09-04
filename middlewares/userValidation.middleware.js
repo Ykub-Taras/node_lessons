@@ -5,6 +5,7 @@ const { ErrorHandler } = require('../errors');
 const {
     statusMessages: {
         BAD_DATA,
+        FORBIDDEN,
         EMAIL_CONFLICT
     },
     statusCodes: {
@@ -76,6 +77,27 @@ module.exports = {
             }
 
             req.foundUser = foundUser;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    rolePermissions: (role, higherAccess = false) => (req, res, next) => {
+        try {
+            const {
+                params: { id },
+                user
+            } = req;
+
+            if (!role === 'admin' && higherAccess) {
+                throw new ErrorHandler(CONFLICT, FORBIDDEN);
+            }
+
+            if ((role === 'user' || role === 'admin') && user._id === id) {
+                return next();
+            }
 
             next();
         } catch (e) {

@@ -1,16 +1,33 @@
-const router = require('express').Router();
+const router = require('express')
+    .Router();
 
-const { authenticationController } = require('../controllers');
+const {
+    authenticationController: {
+        userLogin,
+        logoutUser,
+        refresh
+    }
+} = require('../controllers');
 const {
     authenticationMiddleware: {
-        verifyUserLogin,
-        emailValidation
-    }
+        accessTokenValidation,
+        refreshTokenValidation,
+        verifyUserLogin
+    },
+    dynamicMiddleware: { getDataByDynamicParam }
 } = require('../middlewares');
+const { variables: { VAR_EMAIL } } = require('../config');
 
 router.post('/',
     verifyUserLogin,
-    emailValidation,
-    authenticationController.userLogin);
+    getDataByDynamicParam(VAR_EMAIL, {}, {}, true),
+    userLogin);
+
+router.post('/logout',
+    accessTokenValidation,
+    logoutUser);
+router.post('/refresh',
+    refreshTokenValidation,
+    refresh);
 
 module.exports = router;

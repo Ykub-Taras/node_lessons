@@ -4,36 +4,45 @@ const router = require('express')
 const { usersController } = require('../controllers');
 
 const {
+    variables: {
+        VAR_ID,
+        VAR_ID_DB_FIELD,
+        VAR_PARAMS,
+        VAR_EMAIL
+    }
+} = require('../config');
+
+const {
     userMiddleware: {
         checkDataForCreateUser,
         checkDataForUpdateUser,
-        getUserByDynamicParam,
-        emailValidation,
-    }
+        rolePermissions
+    },
+    dynamicMiddleware: { getDataByDynamicParam },
+    authenticationMiddleware: { accessTokenValidation }
 } = require('../middlewares');
-
-const {
-    VAR_ID,
-    VAR_ID_DB_FIELD,
-    VAR_PARAMS
-} = require('../config/variables');
 
 router.get('/',
     usersController.getAllUsers);
 router.post('/',
     checkDataForCreateUser,
-    emailValidation,
+    getDataByDynamicParam(VAR_EMAIL, {}, {}, {}, true),
     usersController.createUser);
 
 router.get('/:id',
-    getUserByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
+    accessTokenValidation,
+    getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
     usersController.getUserById);
 router.patch('/:id',
     checkDataForUpdateUser,
-    getUserByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
+    getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
+    accessTokenValidation,
+    rolePermissions('user'),
     usersController.updateUser);
 router.delete('/:id',
-    getUserByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
+    getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
+    accessTokenValidation,
+    rolePermissions('admin', true),
     usersController.deleteUser);
 
 module.exports = router;
