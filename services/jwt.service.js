@@ -5,8 +5,7 @@ const { variables: { ACCESS_TOKEN, REFRESH_TOKEN } } = require('../config');
 const { ErrorHandler } = require('../errors');
 const { statusMessages: { WRONG_TOKEN } } = require('../config');
 
-// const verify_token = promisify(jwt.verify);
-const verify_token = promisify(jwt.verify());
+const verify_token = promisify(jwt.verify);
 
 module.exports = {
     generateTokenPair: () => {

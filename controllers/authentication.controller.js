@@ -28,8 +28,6 @@ const authenticationController = {
 
             const normalizedUser = userNormalizer(user);
             res.json(...tokenPair, normalizedUser);
-            // const user_id = JSON.parse(JSON.stringify(user._id));
-            // res.redirect(`users/${user_id}`);
         } catch (e) {
             next(e);
         }
