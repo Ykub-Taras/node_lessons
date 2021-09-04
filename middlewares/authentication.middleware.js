@@ -49,6 +49,25 @@ const authenticationMiddleware = {
         }
     },
 
+    isUserLogged: async (req, res, next) => {
+        try {
+            const access_token = req.get(AUTHORIZATION);
+
+            if (!access_token) {
+                return next();
+            }
+
+            await verifyToken(access_token);
+
+            const DB_token = await OAuth.findOne({ access_token })
+                .populate('user');
+
+            res.redirect(`/users/${DB_token.user.id}`);
+        } catch (e) {
+            next(e);
+        }
+    },
+
     refreshTokenValidation: async (req, res, next) => {
         try {
             const refresh_token = req.get(AUTHORIZATION);

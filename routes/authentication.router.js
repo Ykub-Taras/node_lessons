@@ -12,7 +12,8 @@ const {
     authenticationMiddleware: {
         accessTokenValidation,
         refreshTokenValidation,
-        verifyUserLogin
+        verifyUserLogin,
+        isUserLogged
     },
     dynamicMiddleware: { getDataByDynamicParam }
 } = require('../middlewares');
@@ -22,6 +23,7 @@ const { VAR_BODY } = require('../config/variables');
 router.post('/',
     verifyUserLogin,
     getDataByDynamicParam(VAR_EMAIL, VAR_BODY, VAR_EMAIL, true),
+    isUserLogged,
     userLogin);
 
 router.post('/logout',
