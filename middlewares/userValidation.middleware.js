@@ -58,7 +58,7 @@ module.exports = {
                 throw new ErrorHandler(FORBIDDEN, FORBIDDEN_M);
             }
 
-            if ((role === 'user' || role === 'admin') && user._id === id) {
+            if ((role === 'user' || role === 'admin') && user.id === id) {
                 return next();
             }
         } catch (e) {
