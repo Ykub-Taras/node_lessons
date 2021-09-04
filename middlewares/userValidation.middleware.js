@@ -1,16 +1,12 @@
-const { User } = require('../dataBase');
-
 const { ErrorHandler } = require('../errors');
 
 const {
     statusMessages: {
-        BAD_DATA,
-        FORBIDDEN,
-        EMAIL_CONFLICT
+        FORBIDDEN_M,
     },
     statusCodes: {
-        BAD_REQUEST,
-        CONFLICT
+        FORBIDDEN,
+        BAD_REQUEST
     }
 } = require('../config');
 
@@ -22,21 +18,6 @@ const {
 } = require('../validators');
 
 module.exports = {
-
-    emailValidation: async (req, res, next) => {
-        try {
-            const { email } = req.body;
-            const emailSaved = await User.findOne({ email });
-
-            if (emailSaved) {
-                throw new ErrorHandler(CONFLICT, EMAIL_CONFLICT);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
 
     checkDataForCreateUser: (req, res, next) => {
         try {
@@ -66,24 +47,6 @@ module.exports = {
         }
     },
 
-    getUserByDynamicParam: (paramName, searchIn = 'body', dbFiled = paramName) => async (req, res, next) => {
-        try {
-            const value = req[searchIn][paramName];
-
-            const foundUser = await User.findOne({ [dbFiled]: value });
-
-            if (!foundUser) {
-                throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
-            }
-
-            req.foundUser = foundUser;
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
     rolePermissions: (role, higherAccess = false) => (req, res, next) => {
         try {
             const {
@@ -91,8 +54,8 @@ module.exports = {
                 user
             } = req;
 
-            if (!role === 'admin' && higherAccess) {
-                throw new ErrorHandler(CONFLICT, FORBIDDEN);
+            if (role !== 'admin' && higherAccess) {
+                throw new ErrorHandler(FORBIDDEN, FORBIDDEN_M);
             }
 
             if ((role === 'user' || role === 'admin') && user._id === id) {
@@ -104,3 +67,40 @@ module.exports = {
     }
 
 };
+
+//-------------------------------------
+//
+// getUserByDynamicParam: (paramName, searchIn = 'body', dbFiled = paramName) => async (req, res, next) => {
+//     try {
+//         const value = req[searchIn][paramName];
+//
+//         const foundUser = await User.findOne({ [dbFiled]: value });
+//
+//         if (!foundUser) {
+//             throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
+//         }
+//
+//         req.foundUser = foundUser;
+//
+//         next();
+//     } catch (e) {
+//         next(e);
+//     }
+// },
+
+// -------------
+
+// emailValidation: async (req, res, next) => {
+//     try {
+//         const { email } = req.body;
+//         const emailSaved = await User.findOne({ email });
+//
+//         if (emailSaved) {
+//             throw new ErrorHandler(CONFLICT, EMAIL_CONFLICT);
+//         }
+//
+//         next();
+//     } catch (e) {
+//         next(e);
+//     }
+// },

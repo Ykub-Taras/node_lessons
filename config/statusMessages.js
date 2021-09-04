@@ -21,7 +21,7 @@ module.exports = {
     NO_TOKEN: 'No such token!',
     WRONG_TOKEN: 'Invalid token!',
 
-    FORBIDDEN: 'Forbidden operation',
+    FORBIDDEN_M: 'Forbidden operation',
 
     DONE: 'Done !!!'
 };
