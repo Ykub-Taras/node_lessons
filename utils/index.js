@@ -1,4 +1,4 @@
 module.exports = {
-    userNormalizer: require('./user.normalizer'),
-    carNormalizer: require('./car.normalizer')
+    carNormalizer: require('./car.normalizer'),
+    userNormalizer: require('./user.normalizer')
 };

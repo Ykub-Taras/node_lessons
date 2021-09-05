@@ -2,8 +2,8 @@ const { Car } = require('../dataBase');
 
 const {
     statusCodes: {
-        CREATED,
         ACCEPTED,
+        CREATED,
         NO_CONTENT
     },
     statusMessages: {
@@ -50,8 +50,8 @@ module.exports = {
     updateCar: async (req, res, next) => {
         try {
             const {
-                params: { id },
-                body
+                body,
+                params: { id }
             } = req;
 
             await Car.findByIdAndUpdate(id, { $set: body });

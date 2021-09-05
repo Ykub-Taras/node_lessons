@@ -17,8 +17,8 @@ const OAuthSchema = new Schema({
 
     user: {
         type: Schema.Types.ObjectId,
-        required: true,
-        ref: USERS
+        ref: USERS,
+        required: true
     }
 }, { timestamps: true });
 

@@ -4,10 +4,12 @@ const { ErrorHandler } = require('../errors');
 
 const {
     statusMessages: {
-        BAD_DATA
+        BAD_DATA,
+        EMAIL_CONFLICT
     },
     statusCodes: {
-        BAD_REQUEST
+        BAD_REQUEST,
+        CONFLICT
     }
 } = require('../config');
 
@@ -15,27 +17,20 @@ let foundUser;
 
 module.exports = {
     getDataByDynamicParam: (
-        paramName, searchIn = 'body', dbFiled = paramName, password = false, uniqTrigger = false
+        paramName, searchIn = 'body', dbFiled = paramName, password = false, specialTrigger = false
     ) => async (req, res, next) => {
         try {
             const value = req[searchIn][paramName];
 
             // Adding password to response if needed
-            if (password) {
-                foundUser = await User.findOne({ [dbFiled]: value })
-                    .select('+password');
-            } else {
-                foundUser = await User.findOne({ [dbFiled]: value });
-            }
+            password
+                ? foundUser = await User.findOne({ [dbFiled]: value }).select('+password')
+                : foundUser = await User.findOne({ [dbFiled]: value });
 
-            // Switching type of response in different user status
-            if (!foundUser && !uniqTrigger) {
-                throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
-            }
+            // Switching type of response depending on user's status
+            if (!foundUser && !specialTrigger) throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
 
-            if (foundUser && uniqTrigger) {
-                throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
-            }
+            if (foundUser && specialTrigger) throw new ErrorHandler(CONFLICT, EMAIL_CONFLICT);
 
             req.user = foundUser;
 
@@ -45,6 +40,14 @@ module.exports = {
         }
     }
 };
+
+// -----------------------------------------
+// if (password) {
+//     foundUser = await User.findOne({ [dbFiled]: value })
+//         .select('+password');
+// } else {
+//     foundUser = await User.findOne({ [dbFiled]: value });
+// }
 
 // console.log('paramName: ', paramName);
 // console.log('searchIn: ', searchIn);

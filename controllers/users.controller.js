@@ -2,8 +2,8 @@ const { User } = require('../dataBase');
 
 const {
     statusCodes: {
-        CREATED,
         ACCEPTED,
+        CREATED,
         NO_CONTENT
     },
     statusMessages: {
@@ -61,8 +61,8 @@ module.exports = {
     updateUser: async (req, res, next) => {
         try {
             const {
-                params: { id },
-                body
+                body,
+                params: { id }
             } = req;
 
             const updatedUser = await User.findByIdAndUpdate(id, { $set: body }, { new: true });
@@ -82,7 +82,8 @@ module.exports = {
 
             await User.deleteOne({ _id: id });
 
-            res.status(NO_CONTENT).json(USER_DELETED);
+            res.status(NO_CONTENT)
+                .json(USER_DELETED);
         } catch (error) {
             next(error);
         }

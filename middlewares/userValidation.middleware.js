@@ -23,9 +23,7 @@ module.exports = {
         try {
             const { error } = createUserValidator.validate(req.body);
 
-            if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
-            }
+            if (error) throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
 
             next();
         } catch (e) {
@@ -37,9 +35,7 @@ module.exports = {
         try {
             const { error } = updateUserValidator.validate(req.body);
 
-            if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
-            }
+            if (error) throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
 
             next();
         } catch (e) {
@@ -54,13 +50,9 @@ module.exports = {
                 user
             } = req;
 
-            if (role !== 'admin' && higherAccess) {
-                throw new ErrorHandler(FORBIDDEN, FORBIDDEN_M);
-            }
+            if (role !== 'admin' && higherAccess) throw new ErrorHandler(FORBIDDEN, FORBIDDEN_M);
 
-            if ((role === 'user' || role === 'admin') && user.id === id) {
-                return next();
-            }
+            if ((role === 'user' || role === 'admin') && user.id === id) return next();
         } catch (e) {
             next(e);
         }

@@ -1,11 +1,13 @@
 const { OAuth } = require('../dataBase');
+
 const {
-    variables: { AUTHORIZATION },
-    statusMessages: { DONE }
+    statusMessages: { DONE },
+    variables: { AUTHORIZATION }
 } = require('../config');
+
 const {
-    passwordService: { matchPasswords },
-    jwtService: { generateTokenPair }
+    jwtService: { generateTokenPair },
+    passwordService: { matchPasswords }
 } = require('../services');
 const { userNormalizer } = require('../utils');
 

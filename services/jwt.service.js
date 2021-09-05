@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 
-const { variables: { ACCESS_TOKEN, REFRESH_TOKEN } } = require('../config');
 const { ErrorHandler } = require('../errors');
 const { statusMessages: { WRONG_TOKEN } } = require('../config');
+const { variables: { ACCESS_TOKEN, REFRESH_TOKEN } } = require('../config');
 
 const verify_token = promisify(jwt.verify);
 

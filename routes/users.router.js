@@ -1,16 +1,15 @@
-const router = require('express')
-    .Router();
+const router = require('express').Router();
 
 const { usersController } = require('../controllers');
 
 const {
     variables: {
+        VAR_EMAIL,
         VAR_ID,
         VAR_ID_DB_FIELD,
-        VAR_PARAMS,
-        VAR_EMAIL
+        VAR_PARAMS
     },
-    usersRoleENUM: { USER, ADMIN }
+    usersRoleENUM: { ADMIN, USER }
 } = require('../config');
 
 const {
