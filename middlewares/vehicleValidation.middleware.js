@@ -13,42 +13,7 @@ const {
     }
 } = require('../config');
 
-const {
-    carsValidator: {
-        createCarValidator,
-        updateCarValidator
-    }
-} = require('../validators');
-
 module.exports = {
-
-    checkDataForCreateCar: (req, res, next) => {
-        try {
-            const { error } = createCarValidator.validate(req.body);
-
-            if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    checkDataForUpdateCar: (req, res, next) => {
-        try {
-            const { error } = updateCarValidator.validate(req.body);
-
-            if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
 
     brandValidation: async (req, res, next) => {
         try {
@@ -68,7 +33,7 @@ module.exports = {
     idValidation: async (req, res, next) => {
         try {
             const { id } = req.params;
-            const foundCar = await Car.findByIdAndUpdate(id);
+            const foundCar = await Car.findById(id);
 
             if (!foundCar) {
                 throw new ErrorHandler(BAD_REQUEST, WRONG_ID);

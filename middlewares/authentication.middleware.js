@@ -93,21 +93,3 @@ const authenticationMiddleware = {
 };
 
 module.exports = authenticationMiddleware;
-
-// -------------old code--------------------------------
-// emailValidation: async (req, res, next) => {
-//     try {
-//         const { email } = req.body;
-//         const savedData = await User.findOne({ email })
-//             .select('+password');
-//
-//         if (!savedData) {
-//             throw new ErrorHandler(NOT_FOUND, WRONG_AUTH);
-//         }
-//
-//         req.user = savedData;
-//         next();
-//     } catch (e) {
-//         next(e);
-//     }
-// },

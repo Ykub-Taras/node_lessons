@@ -5,43 +5,11 @@ const {
         FORBIDDEN_M,
     },
     statusCodes: {
-        FORBIDDEN,
-        BAD_REQUEST
+        FORBIDDEN
     }
 } = require('../config');
 
-const {
-    userValidator: {
-        createUserValidator,
-        updateUserValidator
-    }
-} = require('../validators');
-
 module.exports = {
-
-    checkDataForCreateUser: (req, res, next) => {
-        try {
-            const { error } = createUserValidator.validate(req.body);
-
-            if (error) throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    checkDataForUpdateUser: (req, res, next) => {
-        try {
-            const { error } = updateUserValidator.validate(req.body);
-
-            if (error) throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
 
     rolePermissions: (role, higherAccess = false) => (req, res, next) => {
         try {
@@ -50,14 +18,15 @@ module.exports = {
                 user
             } = req;
 
-            if (role !== 'admin' && higherAccess) throw new ErrorHandler(FORBIDDEN, FORBIDDEN_M);
+            if ((user.id !== id && !higherAccess) || (role !== 'admin' && higherAccess)) {
+                throw new ErrorHandler(FORBIDDEN, FORBIDDEN_M);
+            }
 
-            if ((role === 'user' || role === 'admin') && user.id === id) return next();
+            next();
         } catch (e) {
             next(e);
         }
     }
-
 };
 
 //-------------------------------------

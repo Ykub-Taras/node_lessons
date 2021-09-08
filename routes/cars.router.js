@@ -3,18 +3,24 @@ const router = require('express').Router();
 const { carsController } = require('../controllers');
 
 const {
+    dynamicMiddleware: { checkDataForInsertingInDB_byDynamicParam },
     vehicleMiddleware: {
         brandValidation,
-        checkDataForCreateCar,
-        checkDataForUpdateCar,
         idValidation,
     }
 } = require('../middlewares');
 
+const {
+    carsValidator: {
+        createCarValidator,
+        updateCarValidator
+    }
+} = require('../validators');
+
 router.get('/',
     carsController.getAllCars);
 router.post('/',
-    checkDataForCreateCar,
+    checkDataForInsertingInDB_byDynamicParam(createCarValidator),
     brandValidation,
     carsController.createCar);
 
@@ -22,7 +28,7 @@ router.get('/:id',
     idValidation,
     carsController.getCarById);
 router.patch('/:id',
-    checkDataForUpdateCar,
+    checkDataForInsertingInDB_byDynamicParam(updateCarValidator),
     brandValidation,
     idValidation,
     carsController.updateCar);

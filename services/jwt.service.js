@@ -2,8 +2,15 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 
 const { ErrorHandler } = require('../errors');
-const { statusMessages: { WRONG_TOKEN } } = require('../config');
-const { variables: { ACCESS_TOKEN, REFRESH_TOKEN } } = require('../config');
+
+const {
+    statusCodes: { UNAUTHORIZED },
+    statusMessages: { WRONG_TOKEN },
+    variables: {
+        ACCESS_TOKEN,
+        REFRESH_TOKEN
+    }
+} = require('../config');
 
 const verify_token = promisify(jwt.verify);
 
@@ -24,7 +31,7 @@ module.exports = {
 
             await verify_token(token, secretWord);
         } catch (e) {
-            throw new ErrorHandler(401, WRONG_TOKEN);
+            throw new ErrorHandler(UNAUTHORIZED, WRONG_TOKEN);
         }
     }
 };

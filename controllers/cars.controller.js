@@ -54,9 +54,7 @@ module.exports = {
                 params: { id }
             } = req;
 
-            await Car.findByIdAndUpdate(id, { $set: body });
-
-            const updatedCar = await Car.findById(id);
+            const updatedCar = await Car.findByIdAndUpdate(id, { $set: body }, { new: true });
 
             const normalizedCar = carNormalizer(updatedCar);
 

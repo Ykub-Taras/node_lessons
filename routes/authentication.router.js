@@ -24,8 +24,8 @@ const { VAR_BODY } = require('../config/variables');
 
 router.post('/',
     verifyUserLogin,
-    getDataByDynamicParam(VAR_EMAIL, VAR_BODY, VAR_EMAIL, true),
     isUserLogged,
+    getDataByDynamicParam(VAR_EMAIL, VAR_BODY, VAR_EMAIL, true),
     userLogin);
 
 router.post('/logout',

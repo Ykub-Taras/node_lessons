@@ -1,32 +1,44 @@
-const router = require('express').Router();
+const router = require('express')
+    .Router();
 
 const { usersController } = require('../controllers');
 
 const {
     variables: {
+        VAR_BODY,
         VAR_EMAIL,
         VAR_ID,
         VAR_ID_DB_FIELD,
         VAR_PARAMS
     },
-    usersRoleENUM: { ADMIN, USER }
+    usersRoleENUM: {
+        ADMIN,
+        USER
+    }
 } = require('../config');
 
 const {
     userMiddleware: {
-        checkDataForCreateUser,
-        checkDataForUpdateUser,
         rolePermissions
     },
-    dynamicMiddleware: { getDataByDynamicParam },
+    dynamicMiddleware: {
+        checkDataForInsertingInDB_byDynamicParam,
+        getDataByDynamicParam
+    },
     authenticationMiddleware: { accessTokenValidation }
 } = require('../middlewares');
-const { VAR_BODY } = require('../config/variables');
+
+const {
+    userValidator: {
+        createUserValidator,
+        updateUserValidator
+    }
+} = require('../validators');
 
 router.get('/',
     usersController.getAllUsers);
 router.post('/',
-    checkDataForCreateUser,
+    checkDataForInsertingInDB_byDynamicParam(createUserValidator),
     getDataByDynamicParam(VAR_EMAIL, VAR_BODY, VAR_EMAIL, true, true),
     usersController.createUser);
 
@@ -35,14 +47,14 @@ router.get('/:id',
     getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
     usersController.getUserById);
 router.patch('/:id',
-    checkDataForUpdateUser,
-    getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
+    checkDataForInsertingInDB_byDynamicParam(updateUserValidator),
     accessTokenValidation,
+    getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
     rolePermissions(USER),
     usersController.updateUser);
 router.delete('/:id',
-    getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
     accessTokenValidation,
+    getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
     rolePermissions(ADMIN, true),
     usersController.deleteUser);
 

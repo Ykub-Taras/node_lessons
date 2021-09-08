@@ -29,6 +29,7 @@ const authenticationController = {
             });
 
             const normalizedUser = userNormalizer(user);
+
             res.json({
                 ...tokenPair,
                 normalizedUser
@@ -65,6 +66,7 @@ const authenticationController = {
             });
 
             const normalizedUser = userNormalizer(user);
+
             res.json({
                 ...tokenPair,
                 normalizedUser

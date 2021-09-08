@@ -38,20 +38,18 @@ module.exports = {
         } catch (e) {
             next(e);
         }
+    },
+
+    checkDataForInsertingInDB_byDynamicParam: (typeOfValidator) => (req, res, next) => {
+        try {
+            const { error } = [typeOfValidator].validate(req.body);
+
+            if (error) throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+
+            next();
+        } catch (e) {
+            next(e);
+        }
     }
+
 };
-
-// -----------------------------------------
-// if (password) {
-//     foundUser = await User.findOne({ [dbFiled]: value })
-//         .select('+password');
-// } else {
-//     foundUser = await User.findOne({ [dbFiled]: value });
-// }
-
-// console.log('paramName: ', paramName);
-// console.log('searchIn: ', searchIn);
-// console.log('value: ', value);
-// console.log('password: ', password);
-// console.log('uniqTrigger: ', uniqTrigger);
-// console.log('foundUser: ', foundUser);
