@@ -10,11 +10,8 @@ const {
         VAR_ID,
         VAR_ID_DB_FIELD,
         VAR_PARAMS
-    },
-    usersRoleENUM: {
-        ADMIN,
-        USER
     }
+
 } = require('../config');
 
 const {
@@ -50,12 +47,12 @@ router.patch('/:id',
     checkDataForInsertingInDB_byDynamicParam(updateUserValidator),
     accessTokenValidation,
     getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
-    rolePermissions(USER),
+    rolePermissions(),
     usersController.updateUser);
 router.delete('/:id',
     accessTokenValidation,
     getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
-    rolePermissions(ADMIN, true),
+    rolePermissions(true),
     usersController.deleteUser);
 
 module.exports = router;
