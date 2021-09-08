@@ -1,6 +1,12 @@
 const { User } = require('../dataBase');
 
 const {
+    emailActionsEnum: {
+        DELETED_BY_ADMIN,
+        DELETED_BY_USER,
+        USER_CREATED,
+        USER_UPDATED,
+    },
     statusCodes: {
         ACCEPTED,
         CREATED,
@@ -8,12 +14,16 @@ const {
     },
     statusMessages: {
         USER_DELETED
-    }
+    },
+    variables: { MAIL_TO }
 } = require('../config');
 
 const { userNormalizer } = require('../utils');
 
-const { passwordService: { hashPassword } } = require('../services');
+const {
+    emailService: { sendMail },
+    passwordService: { hashPassword }
+} = require('../services');
 
 module.exports = {
     getAllUsers: async (req, res, next) => {
@@ -40,7 +50,9 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const { password } = req.body;
+            const {
+                body: { password },
+            } = req;
 
             const hPassword = await hashPassword(password);
 
@@ -51,6 +63,7 @@ module.exports = {
 
             const normalizedUser = userNormalizer(newUser);
 
+            await sendMail(MAIL_TO, USER_CREATED, normalizedUser.name);
             res.status(CREATED)
                 .json(normalizedUser);
         } catch (error) {
@@ -62,13 +75,14 @@ module.exports = {
         try {
             const {
                 body,
-                params: { id }
+                params: { id },
             } = req;
 
             const updatedUser = await User.findByIdAndUpdate(id, { $set: body }, { new: true });
 
             const normalizedUser = userNormalizer(updatedUser);
 
+            await sendMail(MAIL_TO, USER_UPDATED, normalizedUser.name);
             res.status(ACCEPTED)
                 .json(normalizedUser);
         } catch (error) {
@@ -78,9 +92,18 @@ module.exports = {
 
     deleteUser: async (req, res, next) => {
         try {
-            const { id } = req.params;
+            const {
+                a_user: { role },
+                params: { id },
+                user: { name }
+            } = req;
 
             await User.deleteOne({ _id: id });
+            // await User.findOne({ _id: id });
+
+            (role === 'admin')
+                ? await sendMail(MAIL_TO, DELETED_BY_ADMIN, name)
+                : await sendMail(MAIL_TO, DELETED_BY_USER, name);
 
             res.status(NO_CONTENT)
                 .json(USER_DELETED);

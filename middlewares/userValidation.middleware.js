@@ -11,14 +11,15 @@ const {
 
 module.exports = {
 
-    rolePermissions: (role, higherAccess = false) => (req, res, next) => {
+    rolePermissions: (higherAccess = false) => (req, res, next) => {
         try {
             const {
+                a_user,
                 params: { id },
                 user
             } = req;
 
-            if ((user.id !== id && !higherAccess) || (role !== 'admin' && higherAccess)) {
+            if ((user.id !== id && !higherAccess) || (a_user.role !== 'admin' && higherAccess)) {
                 throw new ErrorHandler(FORBIDDEN, FORBIDDEN_M);
             }
 

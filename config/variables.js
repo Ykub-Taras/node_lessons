@@ -1,6 +1,6 @@
 module.exports = {
     // APP variables:
-    MONGODB_LINK: process.env.MONGODB_LINK || 'mongodb://localhost:27017/lesson7',
+    MONGODB_LINK: process.env.MONGODB_LINK || 'mongodb://localhost:27017/lesson8',
     PORT: process.env.PORT || 5050,
 
     // MODEL variables:
@@ -20,5 +20,12 @@ module.exports = {
     REFRESH_TOKEN: process.env.REFRESH_TOKEN || 'refresh',
 
     // Request arguments
-    AUTHORIZATION: 'Authorization'
+    AUTHORIZATION: 'Authorization',
+
+    //    email sender
+    EMAIL_SANDER: process.env.EMAIL_SANDER || 'test@email.com',
+    PASSWORD_EMAIL_SANDER: process.env.PASSWORD_EMAIL_SANDER || '1234',
+
+    MAIL_TO: process.env.EMAIL_SANDER || 'test@email.com',
+
 };

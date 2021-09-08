@@ -42,7 +42,7 @@ module.exports = {
 
     checkDataForInsertingInDB_byDynamicParam: (typeOfValidator) => (req, res, next) => {
         try {
-            const { error } = [typeOfValidator].validate(req.body);
+            const { error } = typeOfValidator.validate(req.body);
 
             if (error) throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
 

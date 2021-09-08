@@ -1,11 +1,18 @@
 const { OAuth } = require('../dataBase');
 
 const {
+    emailActionsEnum: {
+        USER_AUTHORIZED
+    },
     statusMessages: { DONE },
-    variables: { AUTHORIZATION }
+    variables: {
+        AUTHORIZATION,
+        MAIL_TO
+    }
 } = require('../config');
 
 const {
+    emailService: { sendMail },
     jwtService: { generateTokenPair },
     passwordService: { matchPasswords }
 } = require('../services');
@@ -30,6 +37,7 @@ const authenticationController = {
 
             const normalizedUser = userNormalizer(user);
 
+            await sendMail(MAIL_TO, USER_AUTHORIZED, user.name);
             res.json({
                 ...tokenPair,
                 normalizedUser

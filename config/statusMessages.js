@@ -24,4 +24,6 @@ module.exports = {
     NO_TOKEN: 'No such token!',
     WRONG_TOKEN: 'Invalid token!',
 
+    WRONG_TEMPLATE: 'Wrong template data'
+
 };
