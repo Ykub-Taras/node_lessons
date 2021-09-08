@@ -37,6 +37,7 @@ const authenticationController = {
 
             const normalizedUser = userNormalizer(user);
 
+            // await sendMail(user.email, USER_AUTHORIZED, user.name);
             await sendMail(MAIL_TO, USER_AUTHORIZED, user.name);
             res.json({
                 ...tokenPair,
