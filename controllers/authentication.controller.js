@@ -4,7 +4,7 @@ const {
         DONE,
         CHANGE_ADMIN_PASSWORD
     },
-    statusCodes: { FORBIDDEN },
+    statusCodes: { CREATED, FORBIDDEN },
     usersRoleENUM: { ADMIN },
     variables: {
         AUTHORIZATION,
@@ -110,12 +110,17 @@ const authenticationController = {
             });
 
             await sendMail(
-                user.mail,
+                user.email,
                 typeEmail,
                 {
+                    userName: user.name,
                     resetPassURL: `${FRONTEND_URL}/password?token=${actionToken}`
                 }
             );
+
+            const newUser = userNormalizer(user);
+            res.status(CREATED)
+                .json(newUser);
         } catch (e) {
             next(e);
         }

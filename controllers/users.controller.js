@@ -55,8 +55,9 @@ module.exports = {
 
             await sendMail(user.email, USER_CREATED, { userName: user.name });
 
+            const newUser = userNormalizer(user);
             res.status(CREATED)
-                .json(user);
+                .json(newUser);
         } catch (error) {
             next(error);
         }

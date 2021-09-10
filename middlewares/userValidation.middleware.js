@@ -10,8 +10,6 @@ const {
 } = require('../config');
 const { User } = require('../dataBase');
 
-const { userNormalizer } = require('../utils');
-
 const { ErrorHandler } = require('../errors');
 
 const { passwordService: { hashPassword } } = require('../services');
@@ -36,7 +34,7 @@ module.exports = {
                 password: hPassword
             });
 
-            req.user = userNormalizer(newUser);
+            req.user = newUser;
             next();
         } catch (error) {
             next(error);
