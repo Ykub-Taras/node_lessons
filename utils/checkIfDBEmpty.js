@@ -6,7 +6,7 @@ module.exports = async function checkIfDBEmpty() {
 
         if (numberOfUsers === 0) {
             const newUser = await User.create({
-                name: 'Admin',
+                name: 'admin',
                 email: 'admin@owu.com.ua',
                 password: 'admin',
                 address: 'xxxxxxxxxx',
