@@ -117,11 +117,11 @@ const authenticationController = {
                 ? content = {
                     userName: user.name,
                     adminName: a_user.name,
-                    resetPassURL: `${FRONTEND_URL}/password?token=${actionToken}`
+                    resetPassURL: `${FRONTEND_URL}authentication/password/reset/set?token=${actionToken}`
                 }
                 : content = {
                     userName: user.name,
-                    resetPassURL: `${FRONTEND_URL}/password?token=${actionToken}`
+                    resetPassURL: `${FRONTEND_URL}authentication/password/reset/set?token=${actionToken}`
                 };
 
             await sendMail(
