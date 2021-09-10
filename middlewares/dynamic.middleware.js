@@ -13,13 +13,13 @@ const {
     }
 } = require('../config');
 
-let foundUser;
-
 module.exports = {
     getDataByDynamicParam: (
         paramName, searchIn = 'body', dbFiled = paramName, password = false, specialTrigger = false
     ) => async (req, res, next) => {
         try {
+            let foundUser;
+
             const value = req[searchIn][paramName];
 
             // Adding password to response if needed
