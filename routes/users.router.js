@@ -3,12 +3,9 @@ const router = require('express')
 
 const {
     usersController,
-    authenticationController
 } = require('../controllers');
 
 const {
-    actionTokenEnum: { ADMIN_CHANGE_PASS },
-    emailActionsEnum: { ADMIN_CREATED },
     variables: {
         VAR_BODY,
         VAR_EMAIL,
@@ -61,13 +58,5 @@ router.delete('/:id',
     getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
     rolePermissions(true),
     usersController.deleteUser);
-
-router.post('/new_admin',
-    checkDataForInsertingInDB_byDynamicParam(createUserValidator),
-    accessTokenValidation,
-    getDataByDynamicParam(VAR_EMAIL, VAR_BODY, VAR_EMAIL, true, true),
-    rolePermissions(true),
-    createUserMiddleware(true),
-    authenticationController.sendEmailResetPass(ADMIN_CHANGE_PASS, ADMIN_CREATED));
 
 module.exports = router;
