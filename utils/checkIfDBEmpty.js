@@ -1,14 +1,16 @@
 const { User } = require('../dataBase');
 
-const checkIfDBEmpty = async () => {
+module.exports = async function checkIfDBEmpty() {
     try {
-        if (!User.length) {
+        const numberOfUsers = await User.count();
+
+        if (numberOfUsers === 0) {
             const newUser = await User.create({
                 name: 'Admin',
                 email: 'admin@owu.com.ua',
                 password: 'admin',
-                address: '',
-                phone: '',
+                address: 'xxxxxxxxxx',
+                phone: '1234567890',
                 role: 'admin',
             });
 
@@ -20,5 +22,3 @@ const checkIfDBEmpty = async () => {
         console.log(error);
     }
 };
-
-module.exports = checkIfDBEmpty;
