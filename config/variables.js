@@ -1,6 +1,6 @@
 module.exports = {
     // APP variables:
-    MONGODB_LINK: process.env.MONGODB_LINK || 'mongodb://localhost:27017/lesson8',
+    MONGODB_LINK: process.env.MONGODB_LINK || 'mongodb://localhost:27017/lesson9',
     PORT: process.env.PORT || 5050,
 
     MAIL_TO: process.env.EMAIL_SANDER || 'test@email.com',
