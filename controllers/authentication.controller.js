@@ -112,15 +112,22 @@ const authenticationController = {
                 token: actionToken,
                 user: user._id
             });
-
-            await sendMail(
-                user.email,
-                typeEmail,
-                {
+            let content;
+            (a_user)
+                ? content = {
                     userName: user.name,
                     adminName: a_user.name,
                     resetPassURL: `${FRONTEND_URL}/password?token=${actionToken}`
                 }
+                : content = {
+                    userName: user.name,
+                    resetPassURL: `${FRONTEND_URL}/password?token=${actionToken}`
+                };
+
+            await sendMail(
+                user.email,
+                typeEmail,
+                content
             );
 
             const newUser = userNormalizer(user);
