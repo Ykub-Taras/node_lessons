@@ -18,7 +18,7 @@ module.exports = {
         paramName, searchIn = 'body', dbFiled = paramName, password = false, specialTrigger = false
     ) => async (req, res, next) => {
         try {
-            let foundUser;
+            let foundUser = {};
 
             const value = req[searchIn][paramName];
 

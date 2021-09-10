@@ -51,7 +51,10 @@ module.exports = {
                 user
             } = req;
 
-            if ((user.id !== id && !higherAccess) || (a_user.role !== 'admin' && higherAccess)) {
+            let user_id;
+            (!user) ? user_id = a_user.id : user_id = user.id;
+
+            if ((user_id !== id && !higherAccess) || (a_user.role !== ADMIN && higherAccess)) {
                 throw new ErrorHandler(FORBIDDEN, FORBIDDEN_M);
             }
 
