@@ -106,12 +106,12 @@ const authenticationController = {
                 a_user
             } = req;
             const actionToken = generateActionToken(typeActionToken);
-            console.log(a_user);
 
             await ActionTokens.create({
                 token: actionToken,
                 user: user._id
             });
+
             let content;
             (a_user)
                 ? content = {
