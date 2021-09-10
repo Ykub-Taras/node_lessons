@@ -2,6 +2,8 @@ extends container
 block content
     | Dear #{userName},
     br
+    | Your account was created by #{adminName}
+    br
     | You need reset your password, click below:
     hr
     a(href=resetPassURL) Link to resetting password

@@ -55,7 +55,6 @@ module.exports = {
             if ((user_id !== id && !higherAccess) || (a_user.role !== ADMIN && higherAccess)) {
                 throw new ErrorHandler(FORBIDDEN, FORBIDDEN_M);
             }
-
             next();
         } catch (e) {
             next(e);

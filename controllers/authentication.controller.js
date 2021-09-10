@@ -101,8 +101,12 @@ const authenticationController = {
 
     sendEmailResetPass: (typeActionToken, typeEmail) => async (req, res, next) => {
         try {
-            const { user } = req;
+            const {
+                user,
+                a_user
+            } = req;
             const actionToken = generateActionToken(typeActionToken);
+            console.log(a_user);
 
             await ActionTokens.create({
                 token: actionToken,
@@ -114,6 +118,7 @@ const authenticationController = {
                 typeEmail,
                 {
                     userName: user.name,
+                    adminName: a_user.name,
                     resetPassURL: `${FRONTEND_URL}/password?token=${actionToken}`
                 }
             );
