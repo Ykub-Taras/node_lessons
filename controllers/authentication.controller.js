@@ -1,5 +1,11 @@
 const {
-    statusMessages: { DONE },
+    emailActionsEnum: { USER_AUTHORIZED },
+    statusMessages: {
+        DONE,
+        CHANGE_ADMIN_PASSWORD
+    },
+    statusCodes: { FORBIDDEN },
+    usersRoleENUM: { ADMIN },
     variables: {
         AUTHORIZATION,
         FRONTEND_URL
@@ -18,15 +24,14 @@ const {
         generateActionToken,
         generateOAuthTokenPair
     },
-    passwordService: { matchPasswords },
+    passwordService: {
+        hashPassword,
+        matchPasswords
+    },
 } = require('../services');
 
 const { userNormalizer } = require('../utils');
-const { hashPassword } = require('../services/password.service');
-const { ADMIN } = require('../config/user.roles.enum');
-const { FORBIDDEN } = require('../config/statusCodes');
-const { CHANGE_ADMIN_PASSWORD } = require('../config/statusMessages');
-const ErrorHandler = require('../errors/ErrorHandler');
+const { ErrorHandler } = require('../errors');
 
 const authenticationController = {
     userLogin: async (req, res, next) => {
@@ -47,7 +52,7 @@ const authenticationController = {
             });
 
             const normalizedUser = userNormalizer(user);
-            // await sendMail(normalizedUser.email, USER_AUTHORIZED, { userName: normalizedUser.name });
+            await sendMail(normalizedUser.email, USER_AUTHORIZED, { userName: normalizedUser.name });
             res.json({
                 ...tokenPair,
                 normalizedUser

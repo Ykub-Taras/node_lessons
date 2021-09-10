@@ -1,18 +1,20 @@
-const { ErrorHandler } = require('../errors');
-
 const {
     statusMessages: {
         FORBIDDEN_M,
+        BAD_DATA
     },
     statusCodes: {
         FORBIDDEN
-    }
+    },
+    usersRoleENUM: { ADMIN }
 } = require('../config');
 const { User } = require('../dataBase');
+
 const { userNormalizer } = require('../utils');
-const { ADMIN } = require('../config/user.roles.enum');
-const { BAD_DATA } = require('../config/statusMessages');
-const { hashPassword } = require('../services/password.service');
+
+const { ErrorHandler } = require('../errors');
+
+const { passwordService: { hashPassword } } = require('../services');
 
 module.exports = {
 
