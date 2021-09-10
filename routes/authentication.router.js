@@ -1,30 +1,44 @@
-const router = require('express').Router();
+const router = require('express')
+    .Router();
 
 const {
     authenticationController: {
+        changePass,
         logoutUser,
         refresh,
-        userLogin
+        resetPass,
+        sendEmailResetPass,
+        userLogin,
     }
 } = require('../controllers');
 
-const { variables: { VAR_EMAIL } } = require('../config');
+const {
+    variables: { VAR_BODY, VAR_EMAIL },
+    actionTokenEnum: { FORGOT_PASSWORD },
+    emailActionsEnum: { FORGOT_PASS }
+} = require('../config');
 
 const {
     authenticationMiddleware: {
+        actionTokenValidation,
         accessTokenValidation,
-        isUserLogged,
         refreshTokenValidation,
         verifyUserLogin
     },
-    dynamicMiddleware: { getDataByDynamicParam }
+    dynamicMiddleware: {
+        checkDataForInsertingInDB_byDynamicParam,
+        getDataByDynamicParam
+    }
 } = require('../middlewares');
 
-const { VAR_BODY } = require('../config/variables');
+const {
+    userValidator: {
+        passwordValidator
+    }
+} = require('../validators');
 
 router.post('/',
     verifyUserLogin,
-    isUserLogged,
     getDataByDynamicParam(VAR_EMAIL, VAR_BODY, VAR_EMAIL, true),
     userLogin);
 
@@ -35,4 +49,15 @@ router.post('/refresh',
     refreshTokenValidation,
     refresh);
 
+router.post('/password/reset/send',
+    getDataByDynamicParam(VAR_EMAIL, VAR_BODY),
+    sendEmailResetPass(FORGOT_PASSWORD, FORGOT_PASS));
+router.post('/password/reset/set',
+    checkDataForInsertingInDB_byDynamicParam(passwordValidator),
+    actionTokenValidation(FORGOT_PASSWORD),
+    resetPass);
+router.post('/password/change',
+    checkDataForInsertingInDB_byDynamicParam(passwordValidator),
+    accessTokenValidation,
+    changePass);
 module.exports = router;

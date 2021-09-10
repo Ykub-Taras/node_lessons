@@ -7,6 +7,7 @@ const {
     statusMessages: { WRONG_TEMPLATE },
     variables: {
         EMAIL_SANDER,
+        FRONTEND_URL,
         PASSWORD_EMAIL_SANDER
     }
 } = require('../config');
@@ -27,9 +28,12 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-const sendMail = async (userMail, emailAction, userName = 'client') => {
-    const templateInst = allTemplates[emailAction];
+const sendMail = async (userMail, emailAction, context = {}) => {
+// context = { userName: 'client', frontendURL: FRONTEND_URL })
+    if (!context.userName) context.userName = 'client';
+    if (!context.frontendURL) context.frontendURL = FRONTEND_URL;
 
+    const templateInst = allTemplates[emailAction];
     if (!templateInst) throw new ErrorHandler(SERVER_ERROR, WRONG_TEMPLATE);
 
     const {
@@ -37,7 +41,7 @@ const sendMail = async (userMail, emailAction, userName = 'client') => {
         templateName
     } = templateInst;
 
-    const html = await templateParser.render(templateName, { userName });
+    const html = await templateParser.render(templateName, context);
 
     return transporter.sendMail({
         from: 'No reply',

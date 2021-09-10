@@ -1,5 +1,6 @@
 const {
-    OAuth
+    OAuth,
+    ActionTokens
 } = require('../dataBase');
 
 const { ErrorHandler } = require('../errors');
@@ -14,12 +15,16 @@ const {
         NO_TOKEN,
         WRONG_TOKEN
     },
-    variables: { AUTHORIZATION }
+    variables: {
+        AUTHORIZATION,
+        REFRESH_TOKEN
+    },
+    usersRoleENUM: { USER },
 } = require('../config');
 
 const { userValidator: { loginValidator } } = require('../validators');
 
-const { jwtService: { verifyToken } } = require('../services');
+const { jwtService: { verifyActionToken, verifyOAuthToken } } = require('../services');
 
 const authenticationMiddleware = {
 
@@ -29,10 +34,10 @@ const authenticationMiddleware = {
 
             if (!access_token) throw new ErrorHandler(UNAUTHORIZED, NO_TOKEN);
 
-            await verifyToken(access_token);
+            await verifyOAuthToken(access_token);
 
             const DB_token = await OAuth.findOne({ access_token })
-                .populate('user');
+                .populate(USER);
 
             if (!DB_token) throw new ErrorHandler(UNAUTHORIZED, WRONG_TOKEN);
 
@@ -49,10 +54,10 @@ const authenticationMiddleware = {
 
             if (!refresh_token) throw new ErrorHandler(UNAUTHORIZED, NO_TOKEN);
 
-            await verifyToken(refresh_token, 'refresh');
+            await verifyOAuthToken(refresh_token, REFRESH_TOKEN);
 
             const DB_token = await OAuth.findOne({ refresh_token })
-                .populate('user');
+                .populate(USER);
 
             if (!DB_token) throw new ErrorHandler(UNAUTHORIZED, WRONG_TOKEN);
 
@@ -63,18 +68,20 @@ const authenticationMiddleware = {
         }
     },
 
-    isUserLogged: async (req, res, next) => {
+    actionTokenValidation: (tokenType) => async (req, res, next) => {
         try {
-            const access_token = req.get(AUTHORIZATION);
+            const actionToken = req.get(AUTHORIZATION);
 
-            if (!access_token) return next();
+            if (!actionToken) throw new ErrorHandler(UNAUTHORIZED, NO_TOKEN);
 
-            await verifyToken(access_token);
+            await verifyActionToken(tokenType, actionToken);
 
-            const DB_token = await OAuth.findOne({ access_token })
-                .populate('user');
+            const DB_token = await ActionTokens.findOne({ actionToken }).populate(USER);
 
-            res.redirect(`/users/${DB_token.user.id}`);
+            if (!DB_token) throw new ErrorHandler(UNAUTHORIZED, WRONG_TOKEN);
+
+            req.a_user = DB_token.user;
+            next();
         } catch (e) {
             next(e);
         }

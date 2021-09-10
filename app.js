@@ -30,6 +30,8 @@ const {
     usersRouter
 } = require('./routes');
 
+const { checkIfDBEmpty } = require('./utils');
+
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,6 +43,7 @@ app.get('/ping', (req, res) => res.json('pong')); // test point
 
 // option without rendering
 
+checkIfDBEmpty();
 app.use('/authentication', authenticationRouter);
 app.use('/cars', carsRouter);
 app.use('/users', usersRouter);

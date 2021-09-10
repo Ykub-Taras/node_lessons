@@ -8,8 +8,38 @@ const {
         FORBIDDEN
     }
 } = require('../config');
+const { User } = require('../dataBase');
+const { userNormalizer } = require('../utils');
+const { ADMIN } = require('../config/user.roles.enum');
+const { BAD_DATA } = require('../config/statusMessages');
+const { hashPassword } = require('../services/password.service');
 
 module.exports = {
+
+    createUserMiddleware: (higherAccess = false) => async (req, res, next) => {
+        try {
+            const {
+                body: {
+                    password,
+                    role
+                },
+            } = req;
+
+            if (higherAccess && role !== ADMIN) throw new ErrorHandler(FORBIDDEN, BAD_DATA);
+
+            const hPassword = await hashPassword(password);
+
+            const newUser = await User.create({
+                ...req.body,
+                password: hPassword
+            });
+
+            req.user = userNormalizer(newUser);
+            next();
+        } catch (error) {
+            next(error);
+        }
+    },
 
     rolePermissions: (higherAccess = false) => (req, res, next) => {
         try {
@@ -29,40 +59,3 @@ module.exports = {
         }
     }
 };
-
-//-------------------------------------
-//
-// getUserByDynamicParam: (paramName, searchIn = 'body', dbFiled = paramName) => async (req, res, next) => {
-//     try {
-//         const value = req[searchIn][paramName];
-//
-//         const foundUser = await User.findOne({ [dbFiled]: value });
-//
-//         if (!foundUser) {
-//             throw new ErrorHandler(BAD_REQUEST, BAD_DATA);
-//         }
-//
-//         req.foundUser = foundUser;
-//
-//         next();
-//     } catch (e) {
-//         next(e);
-//     }
-// },
-
-// -------------
-
-// emailValidation: async (req, res, next) => {
-//     try {
-//         const { email } = req.body;
-//         const emailSaved = await User.findOne({ email });
-//
-//         if (emailSaved) {
-//             throw new ErrorHandler(CONFLICT, EMAIL_CONFLICT);
-//         }
-//
-//         next();
-//     } catch (e) {
-//         next(e);
-//     }
-// },

@@ -10,19 +10,18 @@ const {
     statusCodes: {
         ACCEPTED,
         CREATED,
-        NO_CONTENT
+        NO_CONTENT,
     },
     statusMessages: {
         USER_DELETED
     },
-    variables: { MAIL_TO }
+    usersRoleENUM: { ADMIN }
 } = require('../config');
 
 const { userNormalizer } = require('../utils');
 
 const {
     emailService: { sendMail },
-    passwordService: { hashPassword }
 } = require('../services');
 
 module.exports = {
@@ -51,22 +50,13 @@ module.exports = {
     createUser: async (req, res, next) => {
         try {
             const {
-                body: { password },
+                user
             } = req;
 
-            const hPassword = await hashPassword(password);
+            await sendMail(user.email, USER_CREATED, { userName: user.name });
 
-            const newUser = await User.create({
-                ...req.body,
-                password: hPassword
-            });
-
-            const normalizedUser = userNormalizer(newUser);
-
-            // await sendMail(normalizedUser.email, USER_CREATED, normalizedUser.name);
-            await sendMail(MAIL_TO, USER_CREATED, normalizedUser.name);
             res.status(CREATED)
-                .json(normalizedUser);
+                .json(user);
         } catch (error) {
             next(error);
         }
@@ -83,8 +73,8 @@ module.exports = {
 
             const normalizedUser = userNormalizer(updatedUser);
 
-            // await sendMail(normalizedUser.email, USER_UPDATED, normalizedUser.name);
-            await sendMail(MAIL_TO, USER_UPDATED, normalizedUser.name);
+            await sendMail(normalizedUser.email, USER_UPDATED, { userName: normalizedUser.name });
+
             res.status(ACCEPTED)
                 .json(normalizedUser);
         } catch (error) {
@@ -99,20 +89,15 @@ module.exports = {
                 params: { id },
                 user: {
                     name,
-                    // email
+                    email
                 }
             } = req;
 
             await User.deleteOne({ _id: id });
-            // await User.findOne({ _id: id });
 
-            // (role === 'admin')
-            //     ? await sendMail(email, DELETED_BY_ADMIN, name)
-            //     : await sendMail(email, DELETED_BY_USER, name);
-
-            (role === 'admin')
-                ? await sendMail(MAIL_TO, DELETED_BY_ADMIN, name)
-                : await sendMail(MAIL_TO, DELETED_BY_USER, name);
+            (role === ADMIN)
+                ? await sendMail(email, DELETED_BY_ADMIN, { userName: name })
+                : await sendMail(email, DELETED_BY_USER, { userName: name });
 
             res.status(NO_CONTENT)
                 .json(USER_DELETED);

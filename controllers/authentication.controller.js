@@ -1,22 +1,32 @@
-const { OAuth } = require('../dataBase');
-
 const {
-    emailActionsEnum: {
-        USER_AUTHORIZED
-    },
     statusMessages: { DONE },
     variables: {
         AUTHORIZATION,
-        MAIL_TO
+        FRONTEND_URL
     }
 } = require('../config');
 
 const {
+    ActionTokens,
+    OAuth,
+    User
+} = require('../dataBase');
+
+const {
     emailService: { sendMail },
-    jwtService: { generateTokenPair },
-    passwordService: { matchPasswords }
+    jwtService: {
+        generateActionToken,
+        generateOAuthTokenPair
+    },
+    passwordService: { matchPasswords },
 } = require('../services');
+
 const { userNormalizer } = require('../utils');
+const { hashPassword } = require('../services/password.service');
+const { ADMIN } = require('../config/user.roles.enum');
+const { FORBIDDEN } = require('../config/statusCodes');
+const { CHANGE_ADMIN_PASSWORD } = require('../config/statusMessages');
+const ErrorHandler = require('../errors/ErrorHandler');
 
 const authenticationController = {
     userLogin: async (req, res, next) => {
@@ -26,9 +36,10 @@ const authenticationController = {
                 user
             } = req;
 
-            await matchPasswords(password, user.password);
+            if (user.name === ADMIN && password === ADMIN) throw new ErrorHandler(FORBIDDEN, CHANGE_ADMIN_PASSWORD);
 
-            const tokenPair = await generateTokenPair();
+            await matchPasswords(password, user.password);
+            const tokenPair = await generateOAuthTokenPair();
 
             await OAuth.create({
                 ...tokenPair,
@@ -36,9 +47,7 @@ const authenticationController = {
             });
 
             const normalizedUser = userNormalizer(user);
-
-            // await sendMail(user.email, USER_AUTHORIZED, user.name);
-            await sendMail(MAIL_TO, USER_AUTHORIZED, user.name);
+            // await sendMail(normalizedUser.email, USER_AUTHORIZED, { userName: normalizedUser.name });
             res.json({
                 ...tokenPair,
                 normalizedUser
@@ -67,7 +76,7 @@ const authenticationController = {
 
             await OAuth.deleteOne({ refresh_token });
 
-            const tokenPair = await generateTokenPair();
+            const tokenPair = await generateOAuthTokenPair();
 
             await OAuth.create({
                 ...tokenPair,
@@ -80,6 +89,68 @@ const authenticationController = {
                 ...tokenPair,
                 normalizedUser
             });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    sendEmailResetPass: (typeActionToken, typeEmail) => async (req, res, next) => {
+        try {
+            const { user } = req;
+            const actionToken = generateActionToken(typeActionToken);
+
+            await ActionTokens.create({
+                token: actionToken,
+                user: user._id
+            });
+
+            await sendMail(
+                user.mail,
+                typeEmail,
+                {
+                    resetPassURL: `${FRONTEND_URL}/password?token=${actionToken}`
+                }
+            );
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    resetPass: async (req, res, next) => {
+        try {
+            const {
+                body: { password },
+                a_user
+            } = req;
+            const token = req.get(AUTHORIZATION);
+
+            const hashedPassword = await hashPassword(password);
+
+            await User.findByIdAndUpdate(a_user._id, { password: hashedPassword });
+
+            await ActionTokens.deleteOne({ token });
+
+            await OAuth.deleteMany({ user: a_user._id });
+
+            res.json(DONE);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    changePass: async (req, res, next) => {
+        try {
+            const {
+                body: { password },
+                a_user
+            } = req;
+            const hashedPassword = await hashPassword(password);
+
+            await User.findByIdAndUpdate(a_user._id, { password: hashedPassword });
+
+            await OAuth.deleteMany({ user: a_user._id });
+
+            res.json(DONE);
         } catch (e) {
             next(e);
         }
