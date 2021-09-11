@@ -34,5 +34,6 @@ module.exports = {
     PASSWORD_EMAIL_SANDER: process.env.PASSWORD_EMAIL_SANDER || '1234',
 
     //    other variables
+    reset_path: '/authentication/password/reset/'
 
 };

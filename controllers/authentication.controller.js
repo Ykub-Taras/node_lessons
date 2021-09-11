@@ -8,7 +8,8 @@ const {
     usersRoleENUM: { ADMIN },
     variables: {
         AUTHORIZATION,
-        FRONTEND_URL
+        FRONTEND_URL,
+        reset_path
     }
 } = require('../config');
 
@@ -54,7 +55,7 @@ const authenticationController = {
 
             if (password === ADMIN) {
                 console.log(CHANGE_ADMIN_PASSWORD);
-                return res.redirect(307, '/authentication/password/reset/send');
+                return res.redirect(307, `${reset_path}send`);
             }
 
             await matchPasswords(password, user.password);
@@ -131,11 +132,11 @@ const authenticationController = {
                 ? content = {
                     userName: user.name,
                     adminName: a_user.name,
-                    resetPassURL: `${FRONTEND_URL}authentication/password/reset/set?token=${actionToken}`
+                    resetPassURL: `${FRONTEND_URL}${reset_path}set?token=${actionToken}`
                 }
                 : content = {
                     userName: user.name,
-                    resetPassURL: `${FRONTEND_URL}authentication/password/reset/set?token=${actionToken}`
+                    resetPassURL: `${FRONTEND_URL}${reset_path}set?token=${actionToken}`
                 };
 
             await sendMail(
