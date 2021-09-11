@@ -87,6 +87,18 @@ const authenticationMiddleware = {
         }
     },
 
+    receiveToken: (req, res, next) => {
+        try {
+            const { action_token } = req.query;
+
+            req.headers.authorization = action_token;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
     verifyUserLogin: (req, res, next) => {
         try {
             const { error } = loginValidator.validate(req.body);

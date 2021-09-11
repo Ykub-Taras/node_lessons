@@ -1,6 +1,7 @@
 const {
     emailActionsEnum: {
         ADMIN_CREATED,
+        ACTIVATION_BY_EMAIL,
         CHANGE_PASS,
         DELETED_BY_ADMIN,
         DELETED_BY_USER,
@@ -15,6 +16,11 @@ module.exports = {
     [ADMIN_CREATED]: {
         templateName: 'adminCreated',
         subject: 'Please, change your password!'
+    },
+
+    [ACTIVATION_BY_EMAIL]: {
+        templateName: 'activationByEmail',
+        subject: 'Please, activate your account!'
     },
 
     [CHANGE_PASS]: {

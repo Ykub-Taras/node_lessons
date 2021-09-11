@@ -1,10 +1,13 @@
-const { User } = require('../dataBase');
+const {
+    User,
+    ActionTokens
+} = require('../dataBase');
 
 const {
     emailActionsEnum: {
+        ACTIVATION_BY_EMAIL,
         DELETED_BY_ADMIN,
         DELETED_BY_USER,
-        USER_CREATED,
         USER_UPDATED,
     },
     statusCodes: {
@@ -15,13 +18,15 @@ const {
     statusMessages: {
         USER_DELETED
     },
-    usersRoleENUM: { ADMIN }
+    usersRoleENUM: { ADMIN },
+    variables: { FRONTEND_URL }
 } = require('../config');
 
 const { userNormalizer } = require('../utils');
 
 const {
     emailService: { sendMail },
+    jwtService: { generateActionToken }
 } = require('../services');
 
 module.exports = {
@@ -47,15 +52,25 @@ module.exports = {
         }
     },
 
-    createUser: async (req, res, next) => {
+    createUser: (typeActionToken) => async (req, res, next) => {
         try {
             const {
                 user
             } = req;
-
-            await sendMail(user.email, USER_CREATED, { userName: user.name });
-
             const newUser = userNormalizer(user);
+
+            const actionToken = generateActionToken(typeActionToken);
+
+            await ActionTokens.create({
+                token: actionToken,
+                user: newUser._id
+            });
+
+            await sendMail(user.email, ACTIVATION_BY_EMAIL, {
+                userName: user.name,
+                setPassURL: `${FRONTEND_URL}/authentication/activation/set?token=${actionToken}`
+            });
+
             res.status(CREATED)
                 .json(newUser);
         } catch (error) {

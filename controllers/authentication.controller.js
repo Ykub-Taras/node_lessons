@@ -4,7 +4,7 @@ const {
         DONE,
         CHANGE_ADMIN_PASSWORD
     },
-    statusCodes: { CREATED, FORBIDDEN },
+    statusCodes: { CREATED },
     usersRoleENUM: { ADMIN },
     variables: {
         AUTHORIZATION,
@@ -31,9 +31,20 @@ const {
 } = require('../services');
 
 const { userNormalizer } = require('../utils');
-const { ErrorHandler } = require('../errors');
 
 const authenticationController = {
+    activateAccount: async (req, res, next) => {
+        try {
+            const { a_user } = req;
+
+            await ActionTokens.deleteOne({ user: a_user._id });
+
+            res.json(DONE);
+        } catch (e) {
+            next(e);
+        }
+    },
+
     userLogin: async (req, res, next) => {
         try {
             const {
@@ -41,16 +52,19 @@ const authenticationController = {
                 user
             } = req;
 
-            if (user.name === ADMIN && password === ADMIN) throw new ErrorHandler(FORBIDDEN, CHANGE_ADMIN_PASSWORD);
+            if (password === ADMIN) {
+                console.log(CHANGE_ADMIN_PASSWORD);
+                return res.redirect(307, '/authentication/password/reset/send');
+            }
 
             await matchPasswords(password, user.password);
+
             const tokenPair = await generateOAuthTokenPair();
 
             await OAuth.create({
                 ...tokenPair,
                 user: user._id
             });
-
             const normalizedUser = userNormalizer(user);
             await sendMail(normalizedUser.email, USER_AUTHORIZED, { userName: normalizedUser.name });
             res.json({

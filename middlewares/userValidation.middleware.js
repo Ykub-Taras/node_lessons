@@ -8,6 +8,7 @@ const {
     },
     usersRoleENUM: { ADMIN }
 } = require('../config');
+
 const { User } = require('../dataBase');
 
 const { ErrorHandler } = require('../errors');

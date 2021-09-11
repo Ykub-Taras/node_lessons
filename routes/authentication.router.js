@@ -3,6 +3,7 @@ const router = require('express')
 
 const {
     authenticationController: {
+        activateAccount,
         changePass,
         logoutUser,
         refresh,
@@ -13,8 +14,14 @@ const {
 } = require('../controllers');
 
 const {
-    variables: { VAR_BODY, VAR_EMAIL },
-    actionTokenEnum: { FORGOT_PASSWORD },
+    variables: {
+        VAR_BODY,
+        VAR_EMAIL
+    },
+    actionTokenEnum: {
+        ACTIVATE_ACCOUNT,
+        FORGOT_PASSWORD
+    },
     emailActionsEnum: { FORGOT_PASS }
 } = require('../config');
 
@@ -23,6 +30,7 @@ const {
         actionTokenValidation,
         accessTokenValidation,
         refreshTokenValidation,
+        receiveToken,
         verifyUserLogin
     },
     dynamicMiddleware: {
@@ -48,6 +56,11 @@ router.post('/logout',
 router.post('/refresh',
     refreshTokenValidation,
     refresh);
+
+router.post('/activation',
+    receiveToken,
+    actionTokenValidation(ACTIVATE_ACCOUNT),
+    activateAccount);
 
 router.post('/password/reset/send',
     getDataByDynamicParam(VAR_EMAIL, VAR_BODY),

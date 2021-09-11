@@ -22,6 +22,8 @@ const {
         REFRESH_TOKEN
     }
 } = require('../config');
+const { ACTIVATE_ACCOUNT } = require('../config/action-token.enum');
+const { ACTION_TOKEN_A } = require('../config/variables');
 
 const verify_token = promisify(jwt.verify);
 
@@ -29,7 +31,10 @@ function _getSecretWordForActionToken(ActionType) {
     let secret_word = '';
     switch (ActionType) {
         case ADMIN_CHANGE_PASS:
-            secret_word = ACTION_TOKEN_C;
+            secret_word = ACTION_TOKEN_A;
+            break;
+        case ACTIVATE_ACCOUNT:
+            secret_word = ACTION_TOKEN_A;
             break;
         case CHANGE_PASSWORD:
             secret_word = ACTION_TOKEN_C;
