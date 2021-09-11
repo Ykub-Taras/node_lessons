@@ -6,6 +6,7 @@ require('dotenv')
     .config();
 
 const {
+    statusMessages: { FIRST_USER_ERR },
     variables: {
         PORT,
         MONGODB_LINK
@@ -36,15 +37,21 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Creation of first user if DB is empty
+checkIfDBEmpty()
+    .reject(new Error(FIRST_USER_ERR))
+    .then(() => {
+    }, (error) => {
+        console.log(error);
+        throw error;
+    });
+
 app.listen(PORT, () => console.log(`App listen ${PORT}`));
 // console.log(process.env);
 
 app.get('/ping', (req, res) => res.json('pong')); // test point
 
 // option without rendering
-
-checkIfDBEmpty();
-
 app.use('/authentication', authenticationRouter);
 app.use('/cars', carsRouter);
 app.use('/users', usersRouter);

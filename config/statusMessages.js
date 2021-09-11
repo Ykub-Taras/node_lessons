@@ -25,6 +25,8 @@ module.exports = {
     NO_TOKEN: 'No such token!',
     WRONG_TOKEN: 'Invalid token!',
 
-    WRONG_TEMPLATE: 'Wrong template data'
+    WRONG_TEMPLATE: 'Wrong template data',
+
+    FIRST_USER_ERR: 'Creation of first User in database failed : '
 
 };
