@@ -39,10 +39,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Creation of first user if DB is empty
 checkIfDBEmpty()
-    .reject(new Error(FIRST_USER_ERR))
     .then(() => {
     }, (error) => {
-        console.log(error);
+        console.log(FIRST_USER_ERR, error);
         throw error;
     });
 
