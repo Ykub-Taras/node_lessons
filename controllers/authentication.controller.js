@@ -4,7 +4,10 @@ const {
         DONE,
         CHANGE_ADMIN_PASSWORD
     },
-    statusCodes: { CREATED },
+    statusCodes: {
+        CREATED,
+        CHANGE_METHOD_ON_POST
+    },
     usersRoleENUM: { ADMIN },
     variables: {
         AUTHORIZATION,
@@ -55,7 +58,7 @@ const authenticationController = {
 
             if (password === ADMIN) {
                 console.log(CHANGE_ADMIN_PASSWORD);
-                return res.redirect(307, `${reset_path}send`);
+                return res.redirect(CHANGE_METHOD_ON_POST, `${reset_path}send`);
             }
 
             await matchPasswords(password, user.password);
@@ -66,6 +69,7 @@ const authenticationController = {
                 ...tokenPair,
                 user: user._id
             });
+
             const normalizedUser = userNormalizer(user);
             await sendMail(normalizedUser.email, USER_AUTHORIZED, { userName: normalizedUser.name });
             res.json({

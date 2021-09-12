@@ -32,6 +32,8 @@ module.exports = async function checkIfDBEmpty() {
                 role: adminRole,
             });
 
+            // Пароль не хешую, фільтр на логіні не пропустить, перенаправить на зміну паролю.
+
             await sendMail(newUser.email, ADMIN_CREATED, {
                 userName: newUser.name,
                 adminName: createdBySystem,
