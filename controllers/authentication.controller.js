@@ -137,17 +137,16 @@ const authenticationController = {
                 user: user._id
             });
 
-            let content;
-            (a_user)
-                ? content = {
-                    userName: user.name,
+            let content = {
+                userName: user.name,
+                resetPassURL: FRONTEND_URL + reset_path + set_token + actionToken
+            };
+            if (a_user) {
+                content = {
+                    ...content,
                     adminName: a_user.name,
-                    resetPassURL: FRONTEND_URL + reset_path + set_token + actionToken
-                }
-                : content = {
-                    userName: user.name,
-                    resetPassURL: FRONTEND_URL + reset_path + set_token + actionToken
                 };
+            }
 
             await sendMail(
                 user.email,
