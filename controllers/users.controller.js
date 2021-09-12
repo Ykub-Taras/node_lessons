@@ -19,7 +19,11 @@ const {
         USER_DELETED
     },
     usersRoleENUM: { ADMIN },
-    variables: { FRONTEND_URL }
+    variables: {
+        FRONTEND_URL,
+        activate_path,
+        set_token
+    }
 } = require('../config');
 
 const { userNormalizer } = require('../utils');
@@ -68,7 +72,7 @@ module.exports = {
 
             await sendMail(user.email, ACTIVATION_BY_EMAIL, {
                 userName: user.name,
-                setPassURL: `${FRONTEND_URL}/authentication/activation/set?token=${actionToken}`
+                setPassURL: `${FRONTEND_URL}${activate_path}${set_token}${actionToken}`
             });
 
             res.status(CREATED)
@@ -85,11 +89,17 @@ module.exports = {
                 params: { id },
             } = req;
 
-            const updatedUser = await User.findByIdAndUpdate(id, { $set: body }, { new: true });
+            const updatedUser = await User.findByIdAndUpdate(
+                id,
+                { $set: body },
+                { new: true }
+            );
 
             const normalizedUser = userNormalizer(updatedUser);
 
-            await sendMail(normalizedUser.email, USER_UPDATED, { userName: normalizedUser.name });
+            await sendMail(normalizedUser.email,
+                USER_UPDATED,
+                { userName: normalizedUser.name });
 
             res.status(ACCEPTED)
                 .json(normalizedUser);

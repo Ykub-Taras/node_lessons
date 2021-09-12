@@ -24,7 +24,12 @@ const {
 
 const { userValidator: { loginValidator } } = require('../validators');
 
-const { jwtService: { verifyActionToken, verifyOAuthToken } } = require('../services');
+const {
+    jwtService: {
+        verifyActionToken,
+        verifyOAuthToken
+    }
+} = require('../services');
 
 const authenticationMiddleware = {
 
@@ -76,7 +81,8 @@ const authenticationMiddleware = {
 
             await verifyActionToken(tokenType, actionToken);
 
-            const DB_token = await ActionTokens.findOne({ actionToken }).populate(USER);
+            const DB_token = await ActionTokens.findOne({ actionToken })
+                .populate(USER);
 
             if (!DB_token) throw new ErrorHandler(UNAUTHORIZED, WRONG_TOKEN);
 

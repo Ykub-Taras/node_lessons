@@ -12,7 +12,8 @@ const {
     variables: {
         AUTHORIZATION,
         FRONTEND_URL,
-        reset_path
+        reset_path,
+        set_token
     }
 } = require('../config');
 
@@ -71,7 +72,12 @@ const authenticationController = {
             });
 
             const normalizedUser = userNormalizer(user);
-            await sendMail(normalizedUser.email, USER_AUTHORIZED, { userName: normalizedUser.name });
+            await sendMail(
+                normalizedUser.email,
+                USER_AUTHORIZED,
+                { userName: normalizedUser.name }
+            );
+
             res.json({
                 ...tokenPair,
                 normalizedUser
@@ -136,11 +142,11 @@ const authenticationController = {
                 ? content = {
                     userName: user.name,
                     adminName: a_user.name,
-                    resetPassURL: `${FRONTEND_URL}${reset_path}set?token=${actionToken}`
+                    resetPassURL: `${FRONTEND_URL}${reset_path}${set_token}${actionToken}`
                 }
                 : content = {
                     userName: user.name,
-                    resetPassURL: `${FRONTEND_URL}${reset_path}set?token=${actionToken}`
+                    resetPassURL: `${FRONTEND_URL}${reset_path}${set_token}${actionToken}`
                 };
 
             await sendMail(
@@ -167,7 +173,10 @@ const authenticationController = {
 
             const hashedPassword = await hashPassword(password);
 
-            await User.findByIdAndUpdate(a_user._id, { password: hashedPassword });
+            await User.findByIdAndUpdate(
+                a_user._id,
+                { password: hashedPassword }
+            );
 
             await ActionTokens.deleteOne({ token });
 
@@ -187,7 +196,10 @@ const authenticationController = {
             } = req;
             const hashedPassword = await hashPassword(password);
 
-            await User.findByIdAndUpdate(a_user._id, { password: hashedPassword });
+            await User.findByIdAndUpdate(
+                a_user._id,
+                { password: hashedPassword }
+            );
 
             await OAuth.deleteMany({ user: a_user._id });
 
