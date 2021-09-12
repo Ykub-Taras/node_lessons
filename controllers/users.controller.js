@@ -72,7 +72,7 @@ module.exports = {
 
             await sendMail(user.email, ACTIVATION_BY_EMAIL, {
                 userName: user.name,
-                setPassURL: `${FRONTEND_URL}${activate_path}${set_token}${actionToken}`
+                setPassURL: FRONTEND_URL + activate_path + set_token + actionToken
             });
 
             res.status(CREATED)
