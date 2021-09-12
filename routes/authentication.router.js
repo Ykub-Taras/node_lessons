@@ -50,17 +50,17 @@ router.post('/',
     getDataByDynamicParam(VAR_EMAIL, VAR_BODY, VAR_EMAIL, true),
     userLogin);
 
+router.post('/activation',
+    receiveToken,
+    actionTokenValidation(ACTIVATE_ACCOUNT),
+    activateAccount);
+
 router.post('/logout',
     accessTokenValidation,
     logoutUser);
 router.post('/refresh',
     refreshTokenValidation,
     refresh);
-
-router.post('/activation',
-    receiveToken,
-    actionTokenValidation(ACTIVATE_ACCOUNT),
-    activateAccount);
 
 router.post('/password/reset/send',
     getDataByDynamicParam(VAR_EMAIL, VAR_BODY),

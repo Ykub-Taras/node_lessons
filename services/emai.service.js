@@ -29,7 +29,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendMail = async (userMail, emailAction, context = {}) => {
-// context = { userName: 'client', frontendURL: FRONTEND_URL })
+    // context = { userName: 'client', frontendURL: FRONTEND_URL }) =
     if (!context.userName) context.userName = 'client';
     if (!context.frontendURL) context.frontendURL = FRONTEND_URL;
 

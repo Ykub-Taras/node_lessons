@@ -5,6 +5,7 @@ const { ErrorHandler } = require('../errors');
 
 const {
     actionTokenEnum: {
+        ACTIVATE_ACCOUNT,
         ADMIN_CHANGE_PASS,
         CHANGE_PASSWORD,
         FORGOT_PASSWORD
@@ -17,13 +18,12 @@ const {
     statusMessages: { WRONG_TOKEN },
     variables: {
         ACCESS_TOKEN,
+        ACTION_TOKEN_A,
         ACTION_TOKEN_C,
         ACTION_TOKEN_F,
         REFRESH_TOKEN
     }
 } = require('../config');
-const { ACTIVATE_ACCOUNT } = require('../config/action-token.enum');
-const { ACTION_TOKEN_A } = require('../config/variables');
 
 const verify_token = promisify(jwt.verify);
 
@@ -71,6 +71,7 @@ module.exports = {
 
     generateActionToken: (ActionType) => {
         const secret_word = _getSecretWordForActionToken(ActionType);
+
         return jwt.sign({}, secret_word, { expiresIn: '7d' });
     },
 
