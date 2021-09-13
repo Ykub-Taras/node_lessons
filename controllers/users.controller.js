@@ -99,11 +99,12 @@ module.exports = {
             let { body } = req;
 
             if (req.files && req.files.avatar) {
+                const { avatar } = req.files;
+
                 if (user.avatar) {
                     await s3Service.deleteFile(user.avatar);
                 }
 
-                const { avatar } = req.files;
                 const uploadInfo = await s3Service.uploadFile(avatar, USERS, id);
                 body = { ...body, avatar: uploadInfo.Location };
             }
