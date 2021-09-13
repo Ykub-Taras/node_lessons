@@ -39,9 +39,7 @@ module.exports = {
     },
 
     deleteFile: (bucket_path) => {
-        console.log(bucket_path);
         const path_part = bucket_path.split(AMAZON_PATH)[1];
-        console.log(path_part);
         return bucket.deleteObject({
             Bucket: AWS_S3_NAME,
             Key: path_part,
