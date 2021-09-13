@@ -133,11 +133,13 @@ module.exports = {
             const {
                 a_user: { role },
                 params: { id },
-                user: {
-                    name,
-                    email
-                }
+                user
             } = req;
+            const { name, email } = user;
+
+            if (user.avatar) {
+                await s3Service.deleteFile(user.avatar);
+            }
 
             await User.deleteOne({ _id: id });
 
