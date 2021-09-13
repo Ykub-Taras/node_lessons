@@ -72,8 +72,7 @@ const authenticationController = {
             });
 
             const normalizedUser = userNormalizer(user);
-            console.log('*************************normalizedUser*******************');
-            console.log(normalizedUser);
+
             await sendMail(
                 normalizedUser.email,
                 USER_AUTHORIZED,
