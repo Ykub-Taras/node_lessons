@@ -98,10 +98,7 @@ module.exports = {
             if (req.files && req.files.avatar) {
                 const { avatar } = req.files;
                 const uploadInfo = await s3Service.uploadFile(avatar, USERS, id);
-                body = {
-                    ...body,
-                    avatar: uploadInfo.Location
-                };
+                body = { ...body, avatar: uploadInfo.Location };
             }
 
             const updatedUser = await User.findByIdAndUpdate(
