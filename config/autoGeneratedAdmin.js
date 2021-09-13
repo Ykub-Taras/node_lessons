@@ -1,6 +1,6 @@
 module.exports = {
     adminAddress: 'somewhere',
-    adminEmail: 'admin@owu.com.ua',
+    adminEmail: process.env.ADMIN_MAIL || 'admin@owu.com.ua',
     adminName: 'admin',
     adminPassword: 'admin',
     adminPhone: '1234567890',

@@ -30,8 +30,10 @@ const { userNormalizer } = require('../utils');
 
 const {
     emailService: { sendMail },
-    jwtService: { generateActionToken }
+    jwtService: { generateActionToken },
+    s3Service
 } = require('../services');
+const { USERS } = require('../config/variables');
 
 module.exports = {
     getAllUsers: async (req, res, next) => {
@@ -58,22 +60,28 @@ module.exports = {
 
     createUser: (typeActionToken) => async (req, res, next) => {
         try {
-            const {
+            let {
                 user
             } = req;
-            const newUser = userNormalizer(user);
+
+            if (req.files && req.files.avatar) {
+                const { avatar } = req.files;
+                const uploadInfo = await s3Service.uploadFile(avatar, USERS, user.id);
+                user = await User.findByIdAndUpdate(user._id, { avatar: uploadInfo.Location }, { new: true });
+            }
 
             const actionToken = generateActionToken(typeActionToken);
 
             await ActionTokens.create({
                 token: actionToken,
-                user: newUser._id
+                user: user._id
             });
 
             await sendMail(user.email, ACTIVATION_BY_EMAIL, {
                 userName: user.name,
                 setPassURL: FRONTEND_URL + activate_path + set_token + actionToken
             });
+            const newUser = userNormalizer(user);
 
             res.status(CREATED)
                 .json(newUser);
@@ -84,10 +92,17 @@ module.exports = {
 
     updateUser: async (req, res, next) => {
         try {
-            const {
-                body,
-                params: { id },
-            } = req;
+            const { id } = req.params;
+            let { body } = req;
+
+            if (req.files && req.files.avatar) {
+                const { avatar } = req.files;
+                const uploadInfo = await s3Service.uploadFile(avatar, USERS, id);
+                body = {
+                    ...body,
+                    avatar: uploadInfo.Location
+                };
+            }
 
             const updatedUser = await User.findByIdAndUpdate(
                 id,

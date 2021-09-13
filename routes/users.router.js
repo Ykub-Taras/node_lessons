@@ -7,7 +7,7 @@ const {
 } = require('../controllers');
 
 const {
-    actionTokenEnum: { ADMIN_CHANGE_PASS },
+    actionTokenEnum: { ADMIN_CHANGE_PASS, ACTIVATE_ACCOUNT },
     emailActionsEnum: { ADMIN_CREATED },
     variables: {
         VAR_BODY,
@@ -20,15 +20,17 @@ const {
 } = require('../config');
 
 const {
-    userMiddleware: {
-        createUserMiddleware,
-        rolePermissions
-    },
+    authenticationMiddleware: { accessTokenValidation },
+
     dynamicMiddleware: {
         checkDataForInsertingInDB_byDynamicParam,
         getDataByDynamicParam
     },
-    authenticationMiddleware: { accessTokenValidation }
+    fileMiddleware: { checkAvatar },
+    userMiddleware: {
+        createUserMiddleware,
+        rolePermissions
+    },
 } = require('../middlewares');
 
 const {
@@ -41,16 +43,18 @@ const {
 router.get('/',
     usersController.getAllUsers);
 router.post('/',
+    checkAvatar,
     checkDataForInsertingInDB_byDynamicParam(createUserValidator),
     getDataByDynamicParam(VAR_EMAIL, VAR_BODY, VAR_EMAIL, true, true),
     createUserMiddleware(),
-    usersController.createUser);
+    usersController.createUser(ACTIVATE_ACCOUNT));
 
 router.get('/:id',
     accessTokenValidation,
     getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),
     usersController.getUserById);
 router.patch('/:id',
+    checkAvatar,
     checkDataForInsertingInDB_byDynamicParam(updateUserValidator),
     accessTokenValidation,
     getDataByDynamicParam(VAR_ID, VAR_PARAMS, VAR_ID_DB_FIELD),

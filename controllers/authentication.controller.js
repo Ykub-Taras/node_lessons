@@ -5,7 +5,7 @@ const {
         CHANGE_ADMIN_PASSWORD
     },
     statusCodes: {
-        CREATED,
+        ACCEPTED,
         CHANGE_METHOD_ON_POST
     },
     usersRoleENUM: { ADMIN },
@@ -72,6 +72,8 @@ const authenticationController = {
             });
 
             const normalizedUser = userNormalizer(user);
+            console.log('*************************normalizedUser*******************');
+            console.log(normalizedUser);
             await sendMail(
                 normalizedUser.email,
                 USER_AUTHORIZED,
@@ -141,7 +143,12 @@ const authenticationController = {
                 userName: user.name,
                 resetPassURL: FRONTEND_URL + reset_path + set_token + actionToken
             };
-            if (a_user) content = { ...content, adminName: a_user.name };
+            if (a_user) {
+                content = {
+                    ...content,
+                    adminName: a_user.name
+                };
+            }
 
             await sendMail(
                 user.email,
@@ -149,9 +156,8 @@ const authenticationController = {
                 content
             );
 
-            const newUser = userNormalizer(user);
-            res.status(CREATED)
-                .json(newUser);
+            res.status(ACCEPTED)
+                .json(DONE);
         } catch (e) {
             next(e);
         }

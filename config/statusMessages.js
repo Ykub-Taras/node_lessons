@@ -27,6 +27,8 @@ module.exports = {
 
     WRONG_TEMPLATE: 'Wrong template data',
 
-    FIRST_USER_ERR: 'Creation of first User in database failed : '
+    FIRST_USER_ERR: 'Creation of first User in database failed : ',
+
+    WRONG_FILE_TYPE: 'Wrong file format'
 
 };

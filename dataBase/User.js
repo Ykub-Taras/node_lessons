@@ -40,6 +40,9 @@ const userSchema = new Schema(
             type: String,
             default: usersRoleENUM.USER,
             enum: Object.values(usersRoleENUM)
+        },
+        avatar: {
+            type: String
         }
     }, { timestamps: true }
 );
