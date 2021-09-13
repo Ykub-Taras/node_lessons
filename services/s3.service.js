@@ -4,11 +4,11 @@ const uuid = require('uuid').v1;
 
 const {
     variables: {
+        AMAZON_PATH,
         AWS_S3_ACCESS_KEY,
         AWS_S3_NAME,
         AWS_S3_REGION,
         AWS_S3_SECRET_KEY,
-
     }
 } = require('../config');
 
@@ -36,5 +36,15 @@ module.exports = {
             ContentType: mimetype
         })
             .promise();
+    },
+
+    deleteFile: (bucket_path) => {
+        console.log(bucket_path);
+        const path_part = bucket_path.split(AMAZON_PATH)[1];
+        console.log(path_part);
+        return bucket.deleteObject({
+            Bucket: AWS_S3_NAME,
+            Key: path_part,
+        }).promise();
     }
 };

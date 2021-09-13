@@ -92,10 +92,17 @@ module.exports = {
 
     updateUser: async (req, res, next) => {
         try {
-            const { id } = req.params;
+            const {
+                params: { id },
+                user
+            } = req;
             let { body } = req;
 
             if (req.files && req.files.avatar) {
+                if (user.avatar) {
+                    await s3Service.deleteFile(user.avatar);
+                }
+
                 const { avatar } = req.files;
                 const uploadInfo = await s3Service.uploadFile(avatar, USERS, id);
                 body = { ...body, avatar: uploadInfo.Location };
