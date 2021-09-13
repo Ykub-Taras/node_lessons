@@ -21,8 +21,9 @@ const {
     usersRoleENUM: { ADMIN },
     variables: {
         FRONTEND_URL,
+        USERS,
         activate_path,
-        set_token
+        set_token,
     }
 } = require('../config');
 
@@ -33,7 +34,6 @@ const {
     jwtService: { generateActionToken },
     s3Service
 } = require('../services');
-const { USERS } = require('../config/variables');
 
 module.exports = {
     getAllUsers: async (req, res, next) => {
@@ -79,7 +79,7 @@ module.exports = {
 
             await sendMail(user.email, ACTIVATION_BY_EMAIL, {
                 userName: user.name,
-                setPassURL: FRONTEND_URL + activate_path + set_token + actionToken
+                setPassURL: `${FRONTEND_URL}${activate_path}${set_token}${actionToken}`
             });
             const newUser = userNormalizer(user);
 

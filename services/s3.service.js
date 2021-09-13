@@ -27,7 +27,7 @@ module.exports = {
     uploadFile: (file, itemType, itemId) => {
         const { data, mimetype, name } = file;
 
-        const fileName = _fileNameCreator(name, itemType.toString(), itemId);
+        const fileName = _fileNameCreator(name, itemType, itemId);
 
         return bucket.upload({
             Bucket: AWS_S3_NAME,

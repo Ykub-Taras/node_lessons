@@ -140,7 +140,7 @@ const authenticationController = {
 
             let content = {
                 userName: user.name,
-                resetPassURL: FRONTEND_URL + reset_path + set_token + actionToken
+                resetPassURL: `${FRONTEND_URL}${reset_path}${set_token}${actionToken}`
             };
             if (a_user) {
                 content = {
