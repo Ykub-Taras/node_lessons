@@ -55,6 +55,6 @@ module.exports = {
     Month_period: 'month',
     Week_period: 'week',
     Weekly_Schedule_CleanUp_Tokens: '00 4 * * *',
-    Weekly_Schedule_User_Notification: '30 6 * * 1,3,5', /* '30 6 * * mon,wed,fri' - is crone alternative record */
+    Weekly_Schedule_User_Notification: '30 6 * * 1,3,5', /* '30 6 * * mon,wed,fri' - is Cron alternative record */
 
 };
