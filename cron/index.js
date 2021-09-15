@@ -15,6 +15,10 @@ const {
         Weekly_Schedule_User_Notification,
     }
 } = require('../config');
+const {
+    ActionTokens,
+    OAuth
+} = require('../dataBase');
 
 dayJs.extend(utsPlugin);
 
@@ -23,7 +27,7 @@ module.exports = () => {
         try {
             console.log('The weekly scheduled task is started at ', new Date().toISOString());
 
-            await notifyUserAndRemoveOldTokens();
+            await notifyUserAndRemoveOldTokens(Week_period);
 
             console.log('The weekly scheduled task was completed at ', new Date().toISOString());
         } catch (error) {
@@ -35,9 +39,9 @@ module.exports = () => {
         try {
             console.log('Everyday scheduled task is started at ', new Date().toISOString());
 
-            await removeInvalidTokens(Month_period, DeleteOAuthTokens);
+            await removeInvalidTokens(Month_period, DeleteOAuthTokens, OAuth);
 
-            await removeInvalidTokens(Week_period, DeleteActionTokens);
+            await removeInvalidTokens(Week_period, DeleteActionTokens, ActionTokens);
 
             console.log('Everyday scheduled task was completed at ', new Date().toISOString());
         } catch (error) {

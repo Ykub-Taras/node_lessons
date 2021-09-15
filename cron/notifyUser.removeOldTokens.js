@@ -13,10 +13,10 @@ const {
 } = require('../dataBase');
 const { emailService: { sendMail } } = require('../services');
 
-module.exports = async () => {
+module.exports = async (period) => {
     try {
         const date = dayJs.utc()
-            .subtract(1, 'week')
+            .subtract(1, period)
             .toISOString();
 
         const value = await OAuth.find({ createdAt: { $lte: date } })
@@ -33,12 +33,11 @@ module.exports = async () => {
 
             const id = doc.user._id;
 
-            const ActionTokensDel = await ActionTokens.deleteMany({ user: id });
-            const OAuthDel = await OAuth.deleteMany({ user: id });
-
-            console.log('ActionModelTokens document in DB was revised; removed :', ActionTokensDel);
-            console.log('OAuth document in DB was revised; removed :', OAuthDel);
+            await ActionTokens.deleteMany({ user: id });
+            await OAuth.deleteMany({ user: id });
         });
+        console.log('ActionModelTokens document in DB was revised; all old tokens was removed');
+        console.log('OAuth document in DB was revised; all old tokens was removed');
     } catch (error) {
         console.log(error);
     }
