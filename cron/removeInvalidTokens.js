@@ -16,12 +16,16 @@ module.exports = async (period, typeOfClean) => {
 
         switch (typeOfClean) {
             case 'ActionTokensDelete':
+
                 await ActionTokens.deleteMany({ createdAt: { $lte: date } });
+
                 console.log('ActionModelTokens document in DB was revised; all old tokens was removed');
                 break;
 
             case 'OAuthTokensDelete':
+
                 await OAuth.deleteMany({ createdAt: { $lte: date } });
+
                 console.log('OAuth document in DB was revised; all old tokens was removed');
                 break;
 

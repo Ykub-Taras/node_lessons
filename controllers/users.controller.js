@@ -1,6 +1,6 @@
 const {
     User,
-    ActionTokens
+    ActionTokens,
 } = require('../dataBase');
 
 const {
@@ -106,7 +106,10 @@ module.exports = {
                 }
 
                 const uploadInfo = await s3Service.uploadFile(avatar, USERS, id);
-                body = { ...body, avatar: uploadInfo.Location };
+                body = {
+                    ...body,
+                    avatar: uploadInfo.Location
+                };
             }
 
             const updatedUser = await User.findByIdAndUpdate(
@@ -135,7 +138,10 @@ module.exports = {
                 params: { id },
                 user
             } = req;
-            const { name, email } = user;
+            const {
+                name,
+                email
+            } = user;
 
             if (user.avatar) {
                 await s3Service.deleteFile(user.avatar);

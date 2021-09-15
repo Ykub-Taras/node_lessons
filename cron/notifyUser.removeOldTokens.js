@@ -43,3 +43,18 @@ module.exports = async (period) => {
         console.log(error);
     }
 };
+
+// ----------- Alternative option: -----------------------
+
+// const foundedUsers = await OAuth.find();
+// await Promise.all(foundedUsers.map(async (user) => {
+//     await sendMail(
+//         user.email,
+//         NOTIFICATION_LATTER,
+//         { userName: user.name }
+//     );
+//     const id = user._id;
+//     await ActionTokens.deleteMany({ user: id });
+//     await OAuth.deleteMany({ user: id });
+// });
+// }));
