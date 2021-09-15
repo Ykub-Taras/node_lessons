@@ -48,5 +48,7 @@ module.exports = {
     AMAZON_PATH: 'amazonaws.com/',
 
     // CORS config
-    ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'http://localhost:3000'
+    ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'http://localhost:3000',
+    Weekly_Schedule: '30 6 * * 1,3,5'
+
 };

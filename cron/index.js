@@ -3,11 +3,12 @@ const dayJs = require('dayjs');
 const utsPlugin = require('dayjs/plugin/utc');
 
 const notifyUserAndRemoveOldTokens = require('./notifyUser.removeOldTokens');
+const { variables: { Weekly_Schedule } } = require('../config');
 
 dayJs.extend(utsPlugin);
 
 module.exports = () => {
-    cron.schedule('30 6 * * 1,3,5', async () => {
+    cron.schedule(Weekly_Schedule, async () => {
         try {
             console.log('The weekly scheduled task is started at ', new Date().toISOString());
 
