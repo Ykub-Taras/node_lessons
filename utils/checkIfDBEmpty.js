@@ -19,8 +19,9 @@ const { emailService: { sendMail } } = require('../services');
 
 module.exports = async function checkIfDBEmpty() {
     try {
-        const numberOfUsers = await User.count();
         let newUser;
+
+        const numberOfUsers = await User.count();
 
         if (numberOfUsers === 0) {
             newUser = await User.create({
@@ -48,3 +49,8 @@ module.exports = async function checkIfDBEmpty() {
         console.log(error);
     }
 };
+
+// Alternative option:
+
+// const user = await User.findOne();
+// if (!user) {
