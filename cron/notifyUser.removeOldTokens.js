@@ -36,6 +36,7 @@ module.exports = async (period) => {
             await ActionTokens.deleteMany({ user: id });
             await OAuth.deleteMany({ user: id });
         });
+
         console.log('ActionModelTokens document in DB was revised; all old tokens was removed');
         console.log('OAuth document in DB was revised; all old tokens was removed');
     } catch (error) {
