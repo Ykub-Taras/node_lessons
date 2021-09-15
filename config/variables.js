@@ -49,6 +49,11 @@ module.exports = {
 
     // CORS config
     ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'http://localhost:3000',
-    Weekly_Schedule: '30 6 * * 1,3,5'
 
+    DeleteActionTokens: 'ActionTokensDelete',
+    DeleteOAuthTokens: 'OAuthTokensDelete',
+    Month_period: 'month',
+    Week_period: 'week',
+    Weekly_Schedule_CleanUp_Tokens: '00 4 * * *',
+    Weekly_Schedule_User_Notification: '30 6 * * 1,3,5', /* '30 6 * * mon,wed,fri' - is crone alternative record */
 };
