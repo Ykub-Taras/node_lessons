@@ -1,6 +1,6 @@
 const {
-    User,
     ActionTokens,
+    User,
 } = require('../dataBase');
 
 const {

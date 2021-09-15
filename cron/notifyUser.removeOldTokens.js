@@ -46,14 +46,14 @@ module.exports = async (period) => {
 
 // ----------- Alternative option: -----------------------
 
-// const foundedUsers = await OAuth.find();
-// await Promise.all(foundedUsers.map(async (user) => {
+// const foundedUsers = await OAuth.find().populate(USER);
+// await Promise.all(foundedUsers.map(async (value) => {
 //     await sendMail(
-//         user.email,
+//         value.user.email,
 //         NOTIFICATION_LATTER,
-//         { userName: user.name }
+//         { userName: value.user.name }
 //     );
-//     const id = user._id;
+//     const id = value.user._id;
 //     await ActionTokens.deleteMany({ user: id });
 //     await OAuth.deleteMany({ user: id });
 // });
