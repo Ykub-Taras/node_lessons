@@ -1,11 +1,12 @@
 const {
     emailActionsEnum: {
-        ADMIN_CREATED,
         ACTIVATION_BY_EMAIL,
+        ADMIN_CREATED,
         CHANGE_PASS,
         DELETED_BY_ADMIN,
         DELETED_BY_USER,
         FORGOT_PASS,
+        NOTIFICATION_LATTER,
         USER_AUTHORIZED,
         USER_CREATED,
         USER_UPDATED,
@@ -41,6 +42,11 @@ module.exports = {
     [FORGOT_PASS]: {
         templateName: 'forgotPass',
         subject: 'Password resetting!'
+    },
+
+    [NOTIFICATION_LATTER]: {
+        templateName: 'notification-letter',
+        subject: 'You was logged out from OWU.com on all your devices!'
     },
 
     [USER_AUTHORIZED]: {

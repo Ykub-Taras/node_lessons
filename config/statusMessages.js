@@ -29,6 +29,8 @@ module.exports = {
 
     FIRST_USER_ERR: 'Creation of first User in database failed : ',
 
-    WRONG_FILE_TYPE: 'Wrong file format'
+    WRONG_FILE_TYPE: 'Wrong file format',
+
+    CORS_FORBIDDEN: 'CORS are not allowed'
 
 };

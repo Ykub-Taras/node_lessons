@@ -1,7 +1,9 @@
 module.exports = {
     // APP variables:
-    MONGODB_LINK: process.env.MONGODB_LINK || 'mongodb://localhost:27017/lesson10',
+    MONGODB_LINK: process.env.MONGODB_LINK || 'mongodb://localhost:27017/lesson11',
     PORT: process.env.PORT || 5050,
+
+    EXPRESS_STATIC: 'static',
 
     MAIL_TO: process.env.EMAIL_SANDER || 'test@email.com',
 
@@ -43,5 +45,8 @@ module.exports = {
     AWS_S3_ACCESS_KEY: process.env.AWS_S3_ACCESS_KEY || '',
     AWS_S3_REGION: process.env.AWS_S3_REGION || '',
     AWS_S3_SECRET_KEY: process.env.AWS_S3_SECRET_KEY || '',
-    AMAZON_PATH: 'amazonaws.com/'
+    AMAZON_PATH: 'amazonaws.com/',
+
+    // CORS config
+    ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'http://localhost:3000'
 };
