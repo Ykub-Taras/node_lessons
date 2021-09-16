@@ -190,9 +190,15 @@ const authenticationController = {
     changePass: async (req, res, next) => {
         try {
             const {
-                body: { password },
+                body: {
+                    oldPassword,
+                    password
+                },
                 a_user
             } = req;
+
+            await matchPasswords(oldPassword, a_user.password);
+
             const hashedPassword = await hashPassword(password);
 
             await User.findByIdAndUpdate(

@@ -19,23 +19,22 @@ module.exports = async (period) => {
             .subtract(1, period)
             .toISOString();
 
-        const value = await OAuth.find({ createdAt: { $lte: date } })
-            .populate(USER)
-            .lean()
-            .cursor();
+        const foundedUsers = await OAuth.find({ createdAt: { $lte: date } })
+            .populate(USER);
 
-        await value.eachAsync(async (doc) => {
+        await Promise.all(foundedUsers.map(async (value) => {
             await sendMail(
-                doc.user.email,
+                value.user.email,
                 NOTIFICATION_LATTER,
-                { userName: doc.user.name }
+                { userName: value.user.name }
             );
 
-            const id = doc.user._id;
+            const { _id } = value.user;
 
-            await ActionTokens.deleteMany({ user: id });
-            await OAuth.deleteMany({ user: id });
-        });
+            await ActionTokens.deleteMany({ user: _id });
+
+            await OAuth.deleteMany({ user: _id });
+        }));
 
         console.log('ActionModelTokens document in DB was revised; all old tokens was removed');
         console.log('OAuth document in DB was revised; all old tokens was removed');
@@ -46,15 +45,20 @@ module.exports = async (period) => {
 
 // ----------- Alternative option: -----------------------
 
-// const foundedUsers = await OAuth.find().populate(USER);
-// await Promise.all(foundedUsers.map(async (value) => {
+// const value = await OAuth.find({ createdAt: { $lte: date } })
+//     .populate(USER)
+//     .lean()
+//     .cursor();
+//
+// await value.eachAsync(async (doc) => {
 //     await sendMail(
-//         value.user.email,
+//         doc.user.email,
 //         NOTIFICATION_LATTER,
-//         { userName: value.user.name }
+//         { userName: doc.user.name }
 //     );
-//     const id = value.user._id;
-//     await ActionTokens.deleteMany({ user: id });
-//     await OAuth.deleteMany({ user: id });
+//
+// const { _id } = value.user;
+//
+// await ActionTokens.deleteMany({ user: _id });
+// await OAuth.deleteMany({ user: _id });
 // });
-// }));

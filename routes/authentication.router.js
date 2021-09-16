@@ -41,6 +41,7 @@ const {
 
 const {
     userValidator: {
+        emailValidator,
         passwordValidator
     }
 } = require('../validators');
@@ -63,6 +64,7 @@ router.post('/refresh',
     refresh);
 
 router.post('/password/reset/send',
+    checkDataForInsertingInDB_byDynamicParam(emailValidator),
     getDataByDynamicParam(VAR_EMAIL, VAR_BODY),
     sendEmailResetPass(FORGOT_PASSWORD, FORGOT_PASS));
 router.post('/password/reset/set',

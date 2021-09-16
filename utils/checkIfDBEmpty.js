@@ -23,7 +23,7 @@ module.exports = async function checkIfDBEmpty() {
 
         const numberOfUsers = await User.count();
 
-        if (numberOfUsers === 0) {
+        if (!numberOfUsers) {
             newUser = await User.create({
                 name: adminName,
                 email: adminEmail,
