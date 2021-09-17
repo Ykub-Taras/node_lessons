@@ -42,6 +42,7 @@ const {
 const {
     userValidator: {
         emailValidator,
+        oldNewPasswordValidator,
         passwordValidator
     }
 } = require('../validators');
@@ -72,7 +73,7 @@ router.post('/password/reset/set',
     actionTokenValidation(FORGOT_PASSWORD),
     resetPass);
 router.post('/password/change',
-    checkDataForInsertingInDB_byDynamicParam(passwordValidator),
+    checkDataForInsertingInDB_byDynamicParam(oldNewPasswordValidator),
     accessTokenValidation,
     changePass);
 module.exports = router;
