@@ -46,6 +46,7 @@ module.exports = {
             if (error) throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
 
             req.body = value;
+
             next();
         } catch (e) {
             next(e);
