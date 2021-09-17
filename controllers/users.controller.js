@@ -32,13 +32,14 @@ const { userNormalizer } = require('../utils');
 const {
     emailService: { sendMail },
     jwtService: { generateActionToken },
-    s3Service
+    s3Service,
+    userService
 } = require('../services');
 
 module.exports = {
     getAllUsers: async (req, res, next) => {
         try {
-            const users = await User.find();
+            const users = await userService.getAllUsers(req.query);
 
             res.json(users);
         } catch (error) {

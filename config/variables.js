@@ -1,6 +1,7 @@
 module.exports = {
     // APP variables:
-    MONGODB_LINK: process.env.MONGODB_LINK || 'mongodb://localhost:27017/lesson11',
+    // MONGODB_LINK=mongodb+srv:###
+    MONGODB_LINK: process.env.MONGODB_LINK || 'mongodb://localhost:27017/lesson12',
     PORT: process.env.PORT || 5050,
 
     EXPRESS_STATIC: 'static',

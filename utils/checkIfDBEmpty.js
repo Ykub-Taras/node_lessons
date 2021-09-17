@@ -15,7 +15,9 @@ const {
         reset_path
     }
 } = require('../config');
-const { emailService: { sendMail } } = require('../services');
+// падає error
+// const {emailService: {sendMail}} = require('../services');
+const { sendMail } = require('../services/emai.service');
 
 module.exports = async function checkIfDBEmpty() {
     try {

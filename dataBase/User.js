@@ -10,15 +10,27 @@ const {
 
 const userSchema = new Schema(
     {
-        name: {
+        address: {
             type: String,
             required: true,
             trim: true
+        },
+        age: {
+            type: Number,
+            required: false,
+        },
+        avatar: {
+            type: String
         },
         email: {
             type: String,
             required: true,
             unique: true,
+            trim: true
+        },
+        name: {
+            type: String,
+            required: true,
             trim: true
         },
         password: {
@@ -27,11 +39,7 @@ const userSchema = new Schema(
             trim: true,
             select: false
         },
-        address: {
-            type: String,
-            required: true,
-            trim: true
-        },
+
         phone: {
             type: String,
             required: true
@@ -41,9 +49,12 @@ const userSchema = new Schema(
             default: usersRoleENUM.USER,
             enum: Object.values(usersRoleENUM)
         },
-        avatar: {
-            type: String
+
+        YOB: /* Year Of Birth abbreviation */ {
+            type: Number,
+            required: false,
         }
+
     }, { timestamps: true }
 );
 

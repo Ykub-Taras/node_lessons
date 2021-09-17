@@ -1,0 +1,401 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "owu learning | swagger",
+    "version": "0.1",
+    "description": "Lesson #12",
+    "contact": {
+      "name": "Taras Yakubovskyi",
+      "email": "ykub.taras@gmail.com",
+      "url": "https://github.com/Ykub-Taras/node_lessons/tree/lesson_12_HomeWork"
+    }
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "operationId": "getAllUsers",
+        "description": "Receive all users",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "perPage",
+            "default": 10,
+            "required": false,
+            "description": "Number of users, will be returned",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "page number",
+            "required": false,
+            "default": 1,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "register ordering",
+            "required": false,
+            "default": "asc",
+            "type": "array",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "description": "sort by",
+            "required": false,
+            "default": "createdAt",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "description": "client`s name",
+            "required": false,
+            "default": "Aba",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "age.gte",
+            "description": "Start from age",
+            "required": false,
+            "default": 14,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "age.lte",
+            "description": "Up to age",
+            "required": false,
+            "default": 100,
+            "type": "number"
+          },
+
+
+
+          {
+            "in": "query",
+            "name": "YOB.gte",
+            "description": "Start from | Year Of Birth",
+            "required": false,
+            "default": 1921,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "YOB.lte",
+            "description": "Up to | Year Of Birth",
+            "required": false,
+            "default": 2007,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "description": "customer email",
+            "required": false,
+            "default": "user@owu.com",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "address",
+            "description": "client`s address",
+            "required": false,
+            "default": "L`viv",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "phone",
+            "description": "client`s phone",
+            "required": false,
+            "default": 1234567890,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "role",
+            "description": "client`s  role",
+            "required": false,
+            "default": "user",
+            "type": "array",
+            "enum": [
+              "user",
+              "admin"
+            ],
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/user"
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "schema": {
+              "$ref": "#/definitions/errorSchema"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "description": "User creation",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "name",
+            "description": "user name",
+            "type": "string",
+            "required": true,
+            "default": "Aba"
+          },
+          {
+            "in": "formData",
+            "name": "email",
+            "description": "client's email",
+            "type": "string",
+            "required": true,
+            "default": "aba@owu.com"
+          },
+          {
+            "in": "formData",
+            "name": "password",
+            "description": "client's password",
+            "type": "string",
+            "required": true,
+            "default": "pa$$w0rd"
+          },
+          {
+            "in": "formData",
+            "name": "avatar",
+            "description": "client's avatar",
+            "type": "file",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "address",
+            "description": "client's address",
+            "type": "string",
+            "required": true,
+            "default": "L`viv"
+          },
+          {
+            "in": "formData",
+            "name": "phone",
+            "description": "client's email",
+            "type": "number",
+            "required": true,
+            "default": 1234567890
+          },
+          {
+            "in": "formData",
+            "name": "role",
+            "description": "client's role",
+            "type": "string",
+            "required": true,
+            "default": "user"
+          },
+                    {
+            "in": "formData",
+            "name": "age",
+            "description": "client's age",
+            "type": "number",
+            "required": false,
+            "default": 38
+          },{
+            "in": "formData",
+            "name": "YOB",
+            "description": "client's year of birth",
+            "type": "number",
+            "required": false,
+            "default": 1982
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful creation of user",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "schema": {
+              "$ref": "#/definitions/errorSchema"
+            }
+          },
+          "409": {
+            "description": "CONFLICT",
+            "schema": {
+              "$ref": "#/definitions/errorSchema"
+            }
+          }
+        }
+      }
+    },
+    "/authentication": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "description": "client's authentication",
+        "operationId": "authentication",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "email",
+            "description": "User email",
+            "type": "string",
+            "required": true,
+            "default": "aba@owu.com"
+          },
+          {
+            "in": "formData",
+            "name": "password",
+            "description": "User's password",
+            "type": "string",
+            "required": true,
+            "default": "Pa$$$w0rd"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful authentication",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "schema": {
+              "$ref": "#/definitions/errorSchema"
+            }
+          }
+        }
+      }
+    },
+    "/authentication/activation": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "operationId": "activation",
+        "description": "client's account activation",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true,
+            "default": "access_token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account was activated"
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "schema": {
+              "$ref": "#/definitions/errorSchema"
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "schema": {
+              "$ref": "#/definitions/errorSchema"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "user": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "description": "client's identifier",
+          "type": "string",
+          "example": "asd546214asd_5646546"
+        },
+        "age": {
+          "description": "client's age",
+          "type": "number",
+          "example": 38
+        },
+        "address": {
+          "description": "client's address",
+          "type": "string",
+          "example": "L`viv"
+        },
+        "avatar": {
+          "description": "file with client's avatar",
+          "type": "object",
+          "example": "some file"
+        },
+        "email": {
+          "description": "client's email",
+          "type": "string",
+          "example": "aba@owu.com"
+        },
+        "name": {
+          "description": "client's name",
+          "type": "string",
+          "example": "Aba"
+        },
+        "phone": {
+          "description": "client's phone",
+          "type": "number",
+          "example": 1234567890
+        },
+        "role": {
+          "description": "client's role",
+          "type": "string",
+          "example": "user"
+        },
+        "YOB": {
+          "description": "client's year of birth",
+          "type": "number",
+          "example": 1982
+        }
+      }
+    },
+    "errorSchema": {
+      "type": "object",
+      "properties": {
+        "statusCode": {
+          "description": "error code",
+          "type": "number",
+          "example": 400
+        },
+        "statusMassage": {
+          "description": "Special notification with error description",
+          "type": "string",
+          "example": "Warning, something failed!"
+        }
+      }
+    }
+  }
+}

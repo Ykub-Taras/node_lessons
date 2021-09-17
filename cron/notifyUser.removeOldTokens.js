@@ -50,11 +50,11 @@ module.exports = async (period) => {
 //     .lean()
 //     .cursor();
 //
-// await value.eachAsync(async (doc) => {
+// await value.eachAsync(async (docs) => {
 //     await sendMail(
-//         doc.user.email,
+//         docs.user.email,
 //         NOTIFICATION_LATTER,
-//         { userName: doc.user.name }
+//         { userName: docs.user.name }
 //     );
 //
 // const { _id } = value.user;

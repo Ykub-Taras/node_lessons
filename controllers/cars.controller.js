@@ -12,11 +12,14 @@ const {
 } = require('../config');
 
 const { carNormalizer } = require('../utils');
+const {
+    carService
+} = require('../services');
 
 module.exports = {
     getAllCars: async (req, res, next) => {
         try {
-            const cars = await Car.find();
+            const cars = await carService.getAllCars(req.query);
 
             res.json(cars);
         } catch (error) {

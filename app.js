@@ -1,6 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
+const swaggerUiExpress = require('swagger-ui-express');
 const cors = require('cors');
 const expressFileUpload = require('express-fileupload');
 const expressRateLimit = require('express-rate-limit');
@@ -28,12 +29,13 @@ const {
     }
 } = require('./config');
 const cron = require('./cron');
+const swaggerJson = require('./docs/swagger.json');
+const { ErrorHandler } = require('./errors');
 const {
     authenticationRouter,
     carsRouter,
     usersRouter
 } = require('./routes');
-const { ErrorHandler } = require('./errors');
 const { checkIfDBEmpty } = require('./utils');
 
 const app = express();
@@ -46,6 +48,8 @@ if (process.env.NODE_ENV === 'dev') {
 
     app.use(morgan('dev'));
 }
+
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerJson));
 
 app.use(cors({ origin: _configureCors }));
 
