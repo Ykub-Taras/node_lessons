@@ -15,9 +15,9 @@ const {
         reset_path
     }
 } = require('../config');
-// падає error
-// const {emailService: {sendMail}} = require('../services');
-const { sendMail } = require('../services/emai.service');
+// падає error за типом circular dependency, але пише "Cannot read property 'sendMail' of undefined"
+// const { emailService: { sendMail } } = require('../services');
+const { sendMail } = require('../services/email.service');
 
 module.exports = async function checkIfDBEmpty() {
     try {
