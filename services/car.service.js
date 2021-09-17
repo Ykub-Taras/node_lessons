@@ -64,7 +64,7 @@ module.exports = {
             .sort({ [sortBy]: orderType })
             .limit(+perPage)
             .skip((page - 1) * perPage);
-
-        return cars.map((car) => carNormalizer(car));
+        const normalizedListOfCars = cars.map((car) => carNormalizer(car));
+        return normalizedListOfCars;
     }
 };

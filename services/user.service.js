@@ -63,7 +63,7 @@ module.exports = {
             .sort({ [sortBy]: orderType })
             .limit(+perPage)
             .skip((page - 1) * perPage);
-
-        return users.map((user) => userNormalizer(user));
+        const normalizedListOfUsers = users.map((user) => userNormalizer(user));
+        return normalizedListOfUsers;
     }
 };
