@@ -33,21 +33,24 @@ const emailValidator = Joi.object({
 });
 
 const loginValidator = Joi.object({
-
     email: emailSchema,
     password: passwordSchema
-
 });
 
 const passwordValidator = Joi.object({
     password: passwordSchema
+});
 
+const oldNewPasswordValidator = Joi.object({
+    oldPassword: passwordSchema,
+    password: passwordSchema,
 });
 
 module.exports = {
     createUserValidator,
     emailValidator,
     loginValidator,
+    oldNewPasswordValidator,
     passwordValidator,
     updateUserValidator
 };
